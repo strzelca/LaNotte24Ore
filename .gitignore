@@ -9,6 +9,9 @@ __pycache__/
 # Vscode
 .vscode/
 
+# Pyenv
+.python-version
+
 # Distribution / packaging
 .Python
 build/
