@@ -9,7 +9,8 @@ La Notte 24 Ore is a news aggregator powered by NewsAPI and Python.
 Frameworks:
 
 * Flask
-* Bulma CSS
+* PostCSS
+* Tailwind CSS
 
 
 
