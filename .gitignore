@@ -9,9 +9,6 @@ __pycache__/
 # Vscode
 .vscode/
 
-# Pyenv
-.python-version
-
 # Distribution / packaging
 .Python
 build/
@@ -91,7 +88,7 @@ ipython_config.py
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
 #   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+.python-version
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -163,5 +160,6 @@ node_modules/
 package-lock.json
 
 # postcss
-static/css
-static/.webassets-cache
+web/static/css
+web/static/routes/css
+web/static/.webassets-cache

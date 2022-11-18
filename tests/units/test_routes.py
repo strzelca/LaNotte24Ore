@@ -1,4 +1,3 @@
-from web.routes import routes
 from web import create_app
 
 def test_index():

@@ -6,11 +6,13 @@ class Config(object):
     FLASK_DEBUG = os.environ.get('FLASK_DEBUG')
     DEBUG = False
     TESTING = False
-    DATABASE_URI = ''
-    SECRET_KEY = os.environ.get('SECRET_KEY') or ''
+    DATABASE_URI = os.environ.get('DB_URI')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 class ProductionConfig(Config):
-    DATABASE_URI = ''
+    # production config
+    pass
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
