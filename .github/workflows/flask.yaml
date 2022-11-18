@@ -29,6 +29,7 @@ jobs:
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         npm install --save
+        npm install -g postcss postcss-cli
     - name: Execute
       run: |
         pytest
