@@ -9,7 +9,8 @@ class Config(object):
     FLASK_DEBUG = os.environ.get('FLASK_DEBUG')
     DEBUG = False
     TESTING = False
-    DATABASE_URI = os.environ.get('DB_URI')
+    DATABASE_URI = os.environ.get('DATABASE_URI') or ''
+    DATABASE_KEY = os.environ.get('DATABASE_KEY') or ''
     NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
 
 class ProductionConfig(Config):

@@ -14,11 +14,13 @@ permissions:
 
 env:
       NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+      DATABASE_URI: ${{ secrets.DATABASE_URI }}
+      DATABASE_KEY: ${{ secrets.DATABASE_KEY }}
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: testing
+    environment: production
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.9
