@@ -160,6 +160,6 @@ node_modules/
 package-lock.json
 
 # postcss
-web/static/css
-web/static/routes/css
+web/static/css/
+web/static/routes/css/
 web/static/.webassets-cache
