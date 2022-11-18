@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python
+    - name: Test Execution and Endpoints
       uses: actions/setup-python@v3
       with:
         python-version: "3.10.6"
@@ -32,4 +32,4 @@ jobs:
         npm install -g postcss postcss-cli
     - name: Execute
       run: |
-        pytest
+        python -m pytest -v

@@ -1,8 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: 'jit',
   content: [
-    "./templates/**/*.html",
-    "./static/src/**/*.js"
+    './web/templates/**/*.html',
+    './web/routes/templates/**/*.html'
   ],
   theme: {
     extend: {
@@ -13,7 +14,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms')
-  ],
+  plugins: [],
 }
