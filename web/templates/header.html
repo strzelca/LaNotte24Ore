@@ -2,7 +2,7 @@
   <div class="container flex mx-auto max-w-full px-8">
     <!-- LOGO -->
     <div class="relative flex items-center justify-between w-1/2">
-      <div class="w-60 max-w-full px-4">
+      <div class="w-60 max-w-full px-2">
         <a href="javascript:void(0)" class="block w-full py-4">
           <img
             src="{{ url_for('static', filename='assets/img/logo/oneline_logo_nobg.png') }}"
@@ -12,26 +12,27 @@
     </div>
     <!-- END LOGO -->
     <div class="flex divide-x -mx-4 items-center justify-end w-1/2">
-
-        <a
-            href="javascript:void(0)"
-            class="text-dark hover:text-primary px-8 py-2 text-base font-medium"
-        >
-        Ricerca
-        </a>
+      <a href="javascript:void(0)" class="flex items-center hover:text-primary text-dark text-base font-medium px-4">
+        <span class="material-symbols-rounded"> search </span>
         <span
-            class="flex items-center text-dark text-base font-medium"
-            >
-            <a href="javascript:void(0)" class="px-8 hover:text-primary flex items-center">
-                <div class="h-10 w-10">
-                    <img srcset="{{ url_for('static', filename='assets/svg/{}.svg'.format(weather_icon)) }}">
-                </div>
-                {{weather}}
-            </a>
-            <a href="javascript:void(0)">
-                <img src="{{user_img}}" alt="" class="h-10 w-10 ring-2 ring-gray-300 rounded-full">
-            </a>
-        </span>
+          class="text-dark px-4 py-2 hover:text-primary text-base font-medium"
+        >
+          Ricerca
+      </span>
+    </a>
+      <span class="flex items-center text-dark text-base font-medium px-6">
+        <img src="{{weather_icon}}" alt="" />
+        <a href="javascript:void(0)" class="px-6 hover:text-primary">
+          {{weather}}
+        </a>
+        <a href="javascript:void(0)">
+          <img
+            src="{{user_img}}"
+            alt=""
+            class="h-10 w-10 ring-2 ring-gray-300 rounded-full"
+          />
+        </a>
+      </span>
     </div>
   </div>
 </header>

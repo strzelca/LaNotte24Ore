@@ -8,6 +8,7 @@ from config import Config
 from datetime import datetime
 import locale
 
+
 def create_app(config_filename=None):
     app = Flask(__name__)
     config_type = os.environ.get('CONFIG_TYPE', default='config.DevelopmentConfig')
@@ -37,6 +38,15 @@ def get_weather_from_location(location):
     if observation is not None:
         weather = observation.weather
         return f"{round(weather.temperature('celsius')['temp'])}°C - {location}, {now}"
+    return None
+
+def get_weather_icon_from_location(location):
+    owm = OWM(Config.WEATHER_API_KEY)
+    mgr = owm.weather_manager()
+    observation = mgr.weather_at_place(location)
+    if observation is not None:
+        weather = observation.weather
+        return f"https://openweathermap.org/img/wn/{weather.weather_icon_name}.png"
     return None
 
 def get_location_from_ip():
