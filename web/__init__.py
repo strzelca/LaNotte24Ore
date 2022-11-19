@@ -32,7 +32,7 @@ def get_weather_from_location(location):
     owm = OWM(Config.WEATHER_API_KEY)
     mgr = owm.weather_manager()
     observation = mgr.weather_at_place(location)
-    locale.setlocale(locale.LC_ALL, 'it_IT')
+    locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
     now = datetime.now().strftime("%d %B %Y")
     if observation is not None:
         weather = observation.weather
