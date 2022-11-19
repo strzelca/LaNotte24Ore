@@ -1,0 +1,34 @@
+<header class="flex w-full items-center bg-white drop-shadow-xl">
+  <div class="container flex mx-auto max-w-full px-8">
+    <!-- LOGO -->
+    <div class="relative flex items-center justify-between w-1/2">
+      <div class="w-60 max-w-full px-4">
+        <a href="javascript:void(0)" class="block w-full py-4">
+          <img
+            src="{{ url_for('static', filename='assets/img/logo/oneline_logo_nobg.png') }}"
+          />
+        </a>
+      </div>
+    </div>
+    <!-- END LOGO -->
+    <div class="flex divide-x -mx-4 items-center justify-end w-1/2">
+
+        <a
+            href="javascript:void(0)"
+            class="text-dark hover:text-primary px-8 py-2 text-base font-medium"
+        >
+        Ricerca
+        </a>
+        <span
+            class="flex items-center text-dark text-base font-medium"
+            >
+            <a href="javascript:void(0)" class="px-8 hover:text-primary">
+                Er meteo
+            </a>
+            <a href="javascript:void(0)">
+                <img src="{{user_img}}" alt="" class="h-10 w-10 ring-2 ring-gray-300 rounded-full">
+            </a>
+        </span>
+    </div>
+  </div>
+</header>

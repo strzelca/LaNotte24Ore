@@ -6,12 +6,12 @@ module.exports = {
     './web/routes/templates/**/*.html'
   ],
   theme: {
+    fontFamily: {
+      sans: ["Noto Sans", "sans-serif"],
+      serif: ["Noto Serif", "serif"],
+      mono: ["Noto Mono", "monospace"]
+    },
     extend: {
-      fontFamily: {
-        sans: ["Noto Sans", "sans-serif"],
-        serif: ["Noto Serif", "serif"],
-        mono: ["Noto Mono", "monospace"]
-      },
     },
   },
   plugins: [],

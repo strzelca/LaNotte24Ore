@@ -18,6 +18,7 @@ La Notte 24 Ore is a news aggregator powered by NewsAPI and Python.
 - [@einstein1510](https://github.com/einstein1510) | _Project Manager_
 - [@owosrl](https://github.com/owosrl) | _Back-end, Front-end and development environment_
 - [@lelux666](https://github.com/lelux666)  | _Front-end_
+- [@Eciuz](https://github.com/Eciuz) | _Front-end_
 
 
 
