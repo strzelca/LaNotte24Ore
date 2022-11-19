@@ -11,7 +11,9 @@ class Config(object):
     TESTING = False
     DATABASE_URI = os.environ.get('DATABASE_URI') or ''
     DATABASE_KEY = os.environ.get('DATABASE_KEY') or ''
-    NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
+    NEWS_API_KEY = os.environ.get('NEWS_API_KEY') or ''
+    WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY') or ''
+    IPINFO_API_KEY = os.environ.get('IPINFO_API_KEY') or ''
 
 class ProductionConfig(Config):
     # production config

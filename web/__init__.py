@@ -2,7 +2,11 @@ import os
 from flask import Flask
 from supabase.client import create_client as database_client
 from storage3 import create_client as storage_client
+from pyowm import OWM
+from ipinfo import getHandler
 from config import Config
+from datetime import datetime
+import locale
 
 def create_app(config_filename=None):
     app = Flask(__name__)
@@ -23,6 +27,22 @@ def create_storage_client():
             "Authorization": f"Bearer {Config.DATABASE_KEY}"
         },
         is_async=False)
+
+def get_weather_from_location(location):
+    owm = OWM(Config.WEATHER_API_KEY)
+    mgr = owm.weather_manager()
+    observation = mgr.weather_at_place(location)
+    locale.setlocale(locale.LC_ALL, 'it_IT')
+    now = datetime.now().strftime("%d %B %Y")
+    if observation is not None:
+        weather = observation.weather
+        return f"{round(weather.temperature('celsius')['temp'])}°C - {location}, {now}"
+    return None
+
+def get_location_from_ip():
+    handler = getHandler(Config.IPINFO_API_KEY)
+    details = handler.getDetails()
+    return details.city
 
 def register_blueprints(app):
     from web.routes import register_blueprint

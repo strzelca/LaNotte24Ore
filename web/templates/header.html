@@ -22,8 +22,11 @@
         <span
             class="flex items-center text-dark text-base font-medium"
             >
-            <a href="javascript:void(0)" class="px-8 hover:text-primary">
-                Er meteo
+            <a href="javascript:void(0)" class="px-8 hover:text-primary flex items-center">
+                <div class="h-10 w-10">
+                    <img srcset="{{ url_for('static', filename='assets/svg/{}.svg'.format(weather_icon)) }}">
+                </div>
+                {{weather}}
             </a>
             <a href="javascript:void(0)">
                 <img src="{{user_img}}" alt="" class="h-10 w-10 ring-2 ring-gray-300 rounded-full">
