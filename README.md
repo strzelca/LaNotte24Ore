@@ -2,12 +2,15 @@
 
 ![](https://github.com/owosrl/LaNotte24Ore/actions/workflows/flask.yaml/badge.svg) ![](https://img.shields.io/github/license/owosrl/LaNotte24Ore) ![](https://img.shields.io/github/languages/top/owosrl/LaNotte24Ore)
 
-La Notte 24 Ore is a news aggregator powered by NewsAPI and Python.
+La Notte 24 Ore is a news aggregator powered by NewsAPI for Terranova.
 
 
 ### **Back-end**
 * Supabase PostgreSQL
 * Flask
+* Openweathermap API
+* IPInfo API
+* NewsAPI
 
 ### **Front-end**
 * PostCSS
