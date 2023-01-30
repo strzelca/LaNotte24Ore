@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<div class="grid-cols-2">
+    <div>
+        
+    </div>
+    <div>
+        {% for article in news['articles'] %}
+        <div class="p-2">
+            <h1>{{article['title']}}</h1>
+            <p>{{article['description']}}</p>
+            <a href="{{article['url']}}">Read more</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

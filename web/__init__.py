@@ -6,6 +6,7 @@ from pyowm import OWM
 from ipinfo import getHandler
 from config import Config
 from datetime import datetime
+from newsapi import NewsApiClient
 import locale
 
 owm = OWM(Config.WEATHER_API_KEY)
@@ -19,6 +20,10 @@ def create_app(config_filename=None):
     register_blueprints(app)
     return app
 
+
+# # # # # # # # # # # # # # # # # # # # # #
+# Supabase API Methods
+
 def create_database_client():
     return database_client(Config.DATABASE_URI, Config.DATABASE_KEY)
 
@@ -30,6 +35,28 @@ def create_storage_client():
             "Authorization": f"Bearer {Config.DATABASE_KEY}"
         },
         is_async=False)
+
+
+# # # # # # # # # # # # # # # # # # # # # #
+# NewsAPI Methods
+
+def connect_news_api():
+    api = NewsApiClient(api_key=Config.NEWS_API_KEY)
+    try :
+        api.get_sources()
+        return api
+    except:
+        print("Error: NewsAPI connection failed")
+        return None
+
+def get_news():
+    api = connect_news_api()
+    if api:
+        return api.get_top_headlines(language='it',country='it')
+    return "Nothing to see here..."
+
+# # # # # # # # # # # # # # # # # # # # # #
+# OpenWeatherAPI Methods
 
 def get_weather_from_location(location):
     observation = mgr.weather_at_place(location)
@@ -46,6 +73,11 @@ def get_weather_icon_from_location(location):
         weather = observation.weather
         return f"https://openweathermap.org/img/wn/{weather.weather_icon_name}.png"
     return None
+
+
+
+# # # # # # # # # # # # # # # # # # # # #
+# IP Info API Methods
 
 def get_location_from_ip():
     handler = getHandler(Config.IPINFO_API_KEY)

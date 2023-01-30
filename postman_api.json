@@ -1,0 +1,30 @@
+{
+	"info": {
+		"_postman_id": "15b3806f-d3ba-41e0-9946-8ca75fb35c3f",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24248112"
+	},
+	"item": [
+		{
+			"name": "NewsAPI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://newsapi.org/v2/top-headlines",
+					"protocol": "https",
+					"host": [
+						"newsapi",
+						"org"
+					],
+					"path": [
+						"v2",
+						"top-headlines"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
