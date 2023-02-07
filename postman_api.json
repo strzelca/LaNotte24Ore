@@ -25,6 +25,115 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Supabase Auth",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "apikey",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"admin@lanotte24ore.it\",\n    \"password\": \"\"\n}"
+				},
+				"url": {
+					"raw": "https://mhnaicxnggoefxhgyhxk.supabase.co/auth/v1/signup",
+					"protocol": "https",
+					"host": [
+						"mhnaicxnggoefxhgyhxk",
+						"supabase",
+						"co"
+					],
+					"path": [
+						"auth",
+						"v1",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Supabase Auth Login",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "apikey",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"admin@lanotte24ore.it\",\n    \"password\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mhnaicxnggoefxhgyhxk.supabase.co/auth/v1/token?grant_type=password",
+					"protocol": "https",
+					"host": [
+						"mhnaicxnggoefxhgyhxk",
+						"supabase",
+						"co"
+					],
+					"path": [
+						"auth",
+						"v1",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
