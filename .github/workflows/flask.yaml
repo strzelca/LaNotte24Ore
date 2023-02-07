@@ -18,6 +18,9 @@ env:
       IPINFO_API_KEY: ${{ secrets.IPINFO_API_KEY }}
       DATABASE_URI: ${{ secrets.DATABASE_URI }}
       DATABASE_KEY: ${{ secrets.DATABASE_KEY }}
+      AUTH_TEST_USER: ${{ secrets.AUTH_TEST_USER }}
+      AUTH_TEST_PASSWORD: ${{ secrets.AUTH_TEST_PASSWORD }}
+      
 
 jobs:
   test:

@@ -20,7 +20,6 @@ def create_app(config_filename=None):
     register_blueprints(app)
     return app
 
-
 # # # # # # # # # # # # # # # # # # # # # #
 # Supabase API Methods
 
@@ -29,7 +28,7 @@ def create_database_client():
 
 def create_storage_client():
     return storage_client(
-        f"https://{Config.DATABASE_URI}/storage/v1", 
+        f"{Config.DATABASE_URI}/storage/v1", 
         {
             "apiKey": Config.DATABASE_KEY, 
             "Authorization": f"Bearer {Config.DATABASE_KEY}"
@@ -60,7 +59,6 @@ def get_news():
 
 def get_weather_from_location(location):
     observation = mgr.weather_at_place(location)
-    locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
     now = datetime.now().strftime("%d %B %Y")
     if observation:
         weather = observation.weather

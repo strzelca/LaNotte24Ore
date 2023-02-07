@@ -4,6 +4,6 @@ module.exports = {
         autoprefixer: {},
         'postcss-import': {},
         'tailwindcss/nesting': 'postcss-nesting',
-        ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {}),
+        ...(process.env.NODE_ENV >= 'production' ? { cssnano: {} } : {}),
     }
 }

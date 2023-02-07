@@ -30,6 +30,8 @@ share/python-wheels/
 MANIFEST
 .flaskenv
 
+.idea
+
 # MacOS DS Store
 .DS_Store
 

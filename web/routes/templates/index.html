@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="grid-cols-2">
-    <div>
+<div class="grid grid-cols-2">
+    <div class=" m-6 p-4 rounded-2xl drop-shadow-xl bg-gray-100">
         
     </div>
-    <div>
+    <div class="m-6 p-4 rounded-2xl drop-shadow-xl bg-gray-100">
         {% for article in news['articles'] %}
         <div class="p-2">
-            <h1>{{article['title']}}</h1>
-            <p>{{article['description']}}</p>
-            <a href="{{article['url']}}">Read more</a>
+            <a href="{{article['url']}}" class="text-lg font-medium">{{article['title']}}</a>
+            <p class="text-xs">di 
+                <span class="text-xs font-medium">{{article['source']['name']}}</span> 
+                - 
+                <span class="text-xs">{{article['publishedAt']|format_datetime}}</span> 
+            </p>
+            <p class="text-sm">{{article['description']}}</p>
         </div>
         {% endfor %}
     </div>

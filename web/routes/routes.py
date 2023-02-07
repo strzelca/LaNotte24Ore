@@ -22,7 +22,6 @@ storage = create_storage_client()
 @register_blueprint.route('/')
 def index():
     location=get_location_from_ip()
-    print(get_news())
     return render_template('index.html', 
         news=json.loads(json.dumps(get_news())),
         user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
