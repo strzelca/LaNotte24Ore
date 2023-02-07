@@ -40,7 +40,7 @@ jobs:
         npm install --save
     - name: Compile CSS
       run: |
-        npm run dev
+        npm run build:dev
     - name: Endpoints test
       run: |
         python -m pytest -v
