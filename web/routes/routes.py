@@ -30,10 +30,14 @@ def index():
         weather_icon=get_weather_icon_from_location(location)
     )
 
+
+
 @register_blueprint.route('/signup', methods=['GET', 'POST'])
 def signup():
     # TODO: implement signup
     return render_template('signup.html')
+
+
 
 @register_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
@@ -57,6 +61,7 @@ def login():
     else:
         return make_response("Not Found", 404)
 
+
 @register_blueprint.route('/logout')
 def logout():
     user_session = db.auth.get_session()
@@ -64,7 +69,7 @@ def logout():
         db.auth.sign_out()
         return make_response("Logged Out", 200)
     else:
-        return make_response("No user logged in", 200)
+        return make_response("No user logged in", 401)
 
 @register_blueprint.route('/about')
 def about():

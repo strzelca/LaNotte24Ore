@@ -1,7 +1,9 @@
 from supabase.client import create_client as database_client
 from storage3 import create_client as storage_client
+from web import graphql_query
 from gotrue import errors
 from config import Config
+import json
 
 def test_database_connection():
     client = database_client(Config.DATABASE_URI, Config.DATABASE_KEY)
@@ -20,6 +22,11 @@ def test_authentication_database_connection():
         assert None
     assert user_session is not None
     client.auth.sign_out()
+
+def test_graphql_endpoint():
+    query = graphql_query('profiles')
+    print(json.dumps(json.loads(query.text), indent=4))
+    assert query.status_code == 200
 
 def test_storage_connection():
     client = storage_client(

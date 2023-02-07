@@ -1,0 +1,10 @@
+{
+profiles { 
+  id
+  name
+  surname
+  profile_pic
+  lang
+  country
+}
+}

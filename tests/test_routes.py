@@ -9,8 +9,24 @@ def test_index():
     response = client.get('/')
     assert response.status_code == 200
 
-def test_signup():
+def test_login_get():
     app = create_app('lanotte24ore.test')
     client = app.test_client()
-    response = client.get('/signup')
+    response = client.get('/login')
     assert response.status_code == 200
+
+def test_login_post():
+    app = create_app('lanotte24ore.test')
+    client = app.test_client()
+    response = client.post('/login', json={
+        "email": Config.AUTH_TEST_USER,
+        "password": Config.AUTH_TEST_PASSWORD
+    })
+    assert response.status_code == 200
+
+def test_logout():
+    app = create_app('lanotte24ore.test')
+    client = app.test_client()
+    response = client.get('/logout')
+    assert response.status_code == 200
+
