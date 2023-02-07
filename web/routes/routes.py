@@ -38,3 +38,5 @@ def signup():
 @register_blueprint.route('/about')
 def about():
     return render_template('about.html')
+
+from . import api
