@@ -7,6 +7,8 @@ from ipinfo import getHandler
 from config import Config
 from datetime import datetime
 from newsapi import NewsApiClient
+import json
+import requests
 import locale
 
 owm = OWM(Config.WEATHER_API_KEY)
@@ -35,7 +37,24 @@ def create_storage_client():
         },
         is_async=False)
 
-
+def graphql_query(query_filename, arg=None):
+    with open(f'{os.path.dirname(__file__)}/graphql/{query_filename}.gql') as query_file:
+        query = query_file.read()
+        if arg != None:
+            print(query)
+            query = query.replace("ARG", arg)
+        resp = requests.post(
+            f'{Config.DATABASE_URI}/graphql/v1',
+            headers={
+                'apiKey': Config.DATABASE_KEY,
+                'Content-Type': 'application/json'
+            },
+            json={
+                "query": query
+            }
+        )
+        return resp
+    
 # # # # # # # # # # # # # # # # # # # # # #
 # NewsAPI Methods
 

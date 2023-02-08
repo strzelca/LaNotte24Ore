@@ -1,0 +1,16 @@
+{
+    profilesCollection(
+        ARG,
+    ) {
+        edges {
+            node {
+                id
+                name
+                surname
+                profile_pic
+                lang
+                country
+            }
+        }
+    }
+}

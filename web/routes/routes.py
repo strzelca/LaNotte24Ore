@@ -1,5 +1,6 @@
 import json
-from flask import render_template
+from flask import render_template, request, make_response
+from gotrue import errors
 from . import register_blueprint
 from web import create_database_client, create_storage_client, get_news, get_weather_from_location, get_location_from_ip, get_weather_icon_from_location
 
@@ -29,12 +30,49 @@ def index():
         weather_icon=get_weather_icon_from_location(location)
     )
 
+
+
 @register_blueprint.route('/signup', methods=['GET', 'POST'])
 def signup():
     # TODO: implement signup
     return render_template('signup.html')
 
 
+
+@register_blueprint.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if request.json == None:
+            return make_response("Empty Request", 404) 
+        status_code = 200
+        data = request.json
+        try:
+            response = db.auth.sign_in_with_password(credentials=data)
+        except errors.AuthApiError as e:
+            print(e)
+            status_code = 401
+        except errors.AuthInvalidCredentialsError as e:
+            print(e)
+            status_code = 401
+        
+        return make_response("Logged In", status_code)
+    elif request.method == 'GET':
+        return make_response("OwO", 200)
+    else:
+        return make_response("Not Found", 404)
+
+
+@register_blueprint.route('/logout')
+def logout():
+    user_session = db.auth.get_session()
+    if user_session != None:
+        db.auth.sign_out()
+        return make_response("Logged Out", 200)
+    else:
+        return make_response("No user logged in", 401)
+
 @register_blueprint.route('/about')
 def about():
     return render_template('about.html')
+
+from . import api
