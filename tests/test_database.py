@@ -4,6 +4,7 @@ from web import graphql_query
 from gotrue import errors
 from config import Config
 import json
+from lib import data_management
 
 def test_database_connection():
     client = database_client(Config.DATABASE_URI, Config.DATABASE_KEY)
@@ -25,8 +26,31 @@ def test_authentication_database_connection():
 
 def test_graphql_endpoint():
     query = graphql_query('profiles')
-    print(json.dumps(json.loads(query.text), indent=4))
+    data = json.loads(query.text)
+    for user in data_management.user_nodes(data):
+        print(json.dumps(user['node'], indent=4))
     assert query.status_code == 200
+
+def test_graphql_user_endpoint():
+    client = database_client(Config.DATABASE_URI, Config.DATABASE_KEY)
+    try:
+        user_session = client.auth.sign_in_with_password(
+            credentials={
+                "email": Config.AUTH_TEST_USER,
+                "password": Config.AUTH_TEST_PASSWORD
+            }
+        )
+    except errors.AuthInvalidCredentialsError as e:
+        assert None
+    if user_session.user != None:
+        args = str("filter: { id: { eq:" + user_session.user.id + " } }")
+        query = graphql_query('profiles', args)
+        data = json.loads(query.text)
+    
+        for user in data_management.user_nodes(data):
+            print(json.dumps(user['node'], indent=4))
+        assert query.status_code == 200
+    client.auth.sign_out()
 
 def test_storage_connection():
     client = storage_client(
