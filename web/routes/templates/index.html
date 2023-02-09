@@ -2,10 +2,10 @@
 
 {% block content %}
 <div class="grid grid-cols-2">
-    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-slate-700">
+    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
         
     </div>
-    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-slate-700">
+    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
         {% for article in news['articles'] %}
         <div class="p-2">
             <a href="{{article['url']}}" class="text-lg font-medium">{{article['title']}}</a>
