@@ -30,6 +30,7 @@ share/python-wheels/
 MANIFEST
 .flaskenv
 docker-compose.yml
+.dockerignore
 
 .idea
 
