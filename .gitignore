@@ -29,6 +29,8 @@ share/python-wheels/
 *.egg
 MANIFEST
 .flaskenv
+docker-compose.yml
+.dockerignore
 
 .idea
 

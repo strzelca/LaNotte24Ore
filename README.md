@@ -7,6 +7,7 @@ La Notte 24 Ore is a news aggregator powered by NewsAPI for Terranova.
 
 ### **Back-end**
 * Supabase PostgreSQL
+* GraphQL
 * Flask
 * Openweathermap API
 * IPInfo API
@@ -15,6 +16,24 @@ La Notte 24 Ore is a news aggregator powered by NewsAPI for Terranova.
 ### **Front-end**
 * PostCSS
 * Tailwind CSS
+
+
+### **Docker**
+Run with docker-compose:
+
+```bash
+docker-compose up -d
+```
+
+**Avaliable environment variables**:
+
+* `NEWS_API_KEY` - _NewsAPI key_
+* `WEATHER_API_KEY` - _OpenWeatherMap key_
+* `IPINFO_API_KEY` - _IPInfo key_
+* `SUPABASE_URL` - _Supabase URL_
+* `SUPABASE_KEY` - _Supabase key_
+* `AUTH_TEST_USER` - _Test user for auth_
+* `AUTH_TEST_PASSWORD` - _Test password for auth_
 
 ## **Project Team**
 

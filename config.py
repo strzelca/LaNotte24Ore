@@ -7,10 +7,10 @@ dotenv.load_dotenv(os.path.join(BASEDIR, '.env'))
 dotenv.load_dotenv(os.path.join(BASEDIR, '.flaskenv'))
 
 class Config(object):
-    FLASK_DEBUG = os.environ.get('FLASK_DEBUG')
     DEBUG = False
     TESTING = False
-    PORT = os.environ.get('FLASK_RUN_PORT') or 5000
+    HOST = os.environ.get('FLASK_RUN_HOST') or "127.0.0.1"
+    PORT = os.environ.get('FLASK_RUN_PORT') or 8080
 
     DATABASE_URI = os.environ.get('DATABASE_URI') or ''
     DATABASE_KEY = os.environ.get('DATABASE_KEY') or ''

@@ -2,7 +2,7 @@ import json
 from flask import render_template, request, make_response
 from gotrue import errors
 from . import register_blueprint
-from web import create_database_client, create_storage_client, get_news, get_weather_from_location, get_location_from_ip, get_weather_icon_from_location
+from web import *
 
 db = create_database_client()
 storage = create_storage_client()
@@ -27,6 +27,7 @@ def index():
         news=json.loads(json.dumps(get_news())),
         user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
         weather=get_weather_from_location(location),
+        weather_link=get_weather_link(location),
         weather_icon=get_weather_icon_from_location(location)
     )
 

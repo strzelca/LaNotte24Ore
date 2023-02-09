@@ -23,6 +23,3 @@ def api_user():
     else:
         return make_response("Morto", 401)
 
-
-
-
