@@ -1,35 +1,38 @@
-<header class="flex w-full items-center bg-white drop-shadow-xl">
+<header class="flex w-full items-center bg-white dark:bg-slate-800 drop-shadow-xl">
   <div class="container flex mx-auto max-w-full px-8">
     <!-- LOGO -->
     <div class="relative flex items-center justify-between w-1/2">
       <div class="w-60 max-w-full px-2">
         <a href="javascript:void(0)" class="block w-full py-4">
-          <img
-            src="{{ url_for('static', filename='assets/img/logo/oneline_logo_nobg.png') }}"
-          />
+          <picture>
+            <source srcset="{{ url_for('static', filename='assets/img/logo/long_logo_dark.png') }}" media="(prefers-color-scheme: dark">
+            <img
+              src="{{ url_for('static', filename='assets/img/logo/oneline_logo_nobg.png') }}"
+            />
+          </picture>
         </a>
       </div>
     </div>
     <!-- END LOGO -->
     <div class="flex divide-x -mx-4 items-center justify-end w-1/2">
       <a href="javascript:void(0)" class="flex items-center hover:text-primary text-dark text-base font-medium px-4">
-        <span class="material-symbols-rounded"> search </span>
+        <span class="material-symbols-rounded dark:text-gray-50"> search </span>
         <span
-          class="text-dark px-4 py-2 hover:text-primary text-base font-medium"
+          class="text-dark dark:text-gray-50 px-4 py-2 hover:text-primary text-base font-medium"
         >
           Ricerca
       </span>
     </a>
-      <span class="flex items-center text-dark text-base font-medium px-6">
-        <img src="{{weather_icon}}" alt="" />
-        <a href="javascript:void(0)" class="px-6 hover:text-primary">
+      <span class="flex items-center text-dark dark:text-gray-50 text-base font-medium px-6">
+        <img src="{{weather_icon}}" alt="" width="56px"/>
+        <a href="{{weather_link}}" class="px-6 hover:text-primary">
           {{weather}}
         </a>
         <a href="javascript:void(0)">
           <img
             src="{{user_img}}"
             alt=""
-            class="h-10 w-10 ring-2 ring-gray-300 rounded-full"
+            class="h-10 w-10 ring-2 ring-gray-300 dark:text-gray-200 rounded-full"
           />
         </a>
       </span>
