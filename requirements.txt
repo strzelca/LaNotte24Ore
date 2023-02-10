@@ -42,7 +42,6 @@ pkginfo==1.9.6
 pluggy==1.0.0
 postgrest-py==0.10.3
 promise==2.3
-py==1.11.0
 pydantic==1.10.4
 Pygments==2.14.0
 pyowm==3.3.0
