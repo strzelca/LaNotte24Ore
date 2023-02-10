@@ -1,6 +1,6 @@
 <p align="center"><img src="https://github.com/owosrl/LaNotte24Ore/raw/main/web/static/assets/img/logo/logo_nobg.png"></img></p>
 
-![](https://github.com/owosrl/LaNotte24Ore/actions/workflows/flask.yaml/badge.svg) ![](https://img.shields.io/github/license/owosrl/LaNotte24Ore) ![](https://img.shields.io/github/languages/top/owosrl/LaNotte24Ore)
+![](https://github.com/owosrl/LaNotte24Ore/actions/workflows/production.yaml/badge.svg) ![](https://img.shields.io/github/license/owosrl/LaNotte24Ore) ![](https://img.shields.io/github/languages/top/owosrl/LaNotte24Ore)
 
 La Notte 24 Ore is a news aggregator powered by NewsAPI for Terranova.
 
