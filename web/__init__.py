@@ -7,7 +7,6 @@ from ipinfo import getHandler
 from config import Config
 from datetime import datetime
 from newsapi import NewsApiClient
-import language_dict
 import json
 import requests
 import waitress
@@ -150,3 +149,35 @@ def announces_bogons():
 def register_blueprints(app):
     from web.routes import register_blueprint
     app.register_blueprint(register_blueprint)  
+
+
+
+
+# Create ad associative array of language codes and language names based on
+# IPInfo country codes
+
+language_dict = {
+    "US": "en",
+    "GB": "en",
+    "AU": "en",
+    "CA": "en",
+    "NZ": "en",
+    "IE": "en",
+    "ZA": "en",
+    "IN": "en",
+    "SG": "en",
+    "PH": "en",
+    "MY": "en",
+    "HK": "en",
+    "CN": "en",
+    "JP": "en",
+    "KR": "en",
+    "TW": "en",
+    "TH": "en",
+    "ID": "en",
+    "BG": "en",
+    "HR": "en",
+    "CZ": "en",
+    "AL": "en",
+    "UA": "ru"
+}
