@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.description="La Notte 24 Ore"
 LABEL org.opencontainers.image.licenses=GPL-3.0-or-later
 
 # INSTALL BUILD DEPS
-RUN apk add --no-cache nodejs npm gcc g++ musl-dev jpeg-dev zlib-dev libffi-dev cairo-dev pango-dev gdk-pixbuf-dev linux-headers
+RUN apk add --no-cache nodejs npm gcc g++ musl-dev jpeg-dev zlib-dev libffi-dev cairo-dev pango-dev gdk-pixbuf-dev
 RUN python -m pip install --upgrade pip
 
 COPY . .
