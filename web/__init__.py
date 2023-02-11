@@ -9,6 +9,7 @@ from datetime import datetime
 from newsapi import NewsApiClient
 import json
 import requests
+import waitress
 import locale
 
 owm = OWM(Config.WEATHER_API_KEY)
@@ -60,7 +61,7 @@ def graphql_query(query_filename, arg=None):
 
 def connect_news_api():
     api = NewsApiClient(api_key=Config.NEWS_API_KEY)
-    try :
+    try:
         api.get_sources()
         return api
     except:
@@ -68,10 +69,35 @@ def connect_news_api():
         return None
 
 def get_news():
+    db = create_database_client()
+    if announces_bogons():
+        return json.loads("""
+            {
+                "articles": [
+                    {
+                        "title": "STOP USING TIM",
+                        "source": {
+                            "name": "A person with IPv6"
+                        },
+                        "publishedAt": "1914-07-28T00:00:00Z",
+                        "description": "You are literally using AS6762 TELECOM ITALIA SPARKLE S.p.A."
+                    }
+                ]
+            }
+        """)
+    if db.auth.get_session():
+        client = create_app().test_client()
+        country_code = json.loads(client.get('/api/user').text)['country']
+        language = json.loads(client.get('/api/user').text)['language']
+    else:
+        country_code = language = get_state_from_ip()
     api = connect_news_api()
-    if api:
-        return api.get_top_headlines(language='it',country='it')
-    return "Nothing to see here..."
+    if api:    
+        print(f"News For: {f'{country_code}'.lower()}")
+        return api.get_top_headlines(language=f'{language}'.lower(),country=f'{country_code}'.lower())
+    else:
+        print("No news")
+        return "Nothing to see here..."
 
 # # # # # # # # # # # # # # # # # # # # # #
 # OpenWeatherAPI Methods
@@ -106,6 +132,19 @@ def get_location_from_ip():
     handler = getHandler(Config.IPINFO_API_KEY)
     details = handler.getDetails()
     return details.city
+
+def get_state_from_ip():
+    handler = getHandler(Config.IPINFO_API_KEY)
+    details = handler.getDetails()
+    return details.country
+
+def announces_bogons():
+    handler = getHandler(Config.IPINFO_API_KEY)
+    details = handler.getDetails()
+    if details.org == "AS6762 TELECOM ITALIA SPARKLE S.p.A.":
+        return True
+    else:
+        return False
 
 def register_blueprints(app):
     from web.routes import register_blueprint
