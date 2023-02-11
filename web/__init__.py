@@ -7,6 +7,7 @@ from ipinfo import getHandler
 from config import Config
 from datetime import datetime
 from newsapi import NewsApiClient
+import language_dict
 import json
 import requests
 import waitress
@@ -90,7 +91,7 @@ def get_news():
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        country_code = language = get_state_from_ip()
+        country_code,language = get_state_from_ip(),language_dict.language_dict[get_state_from_ip()]
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
