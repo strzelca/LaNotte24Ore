@@ -1,0 +1,47 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "Python 3",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/python:0-3.10",
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+        "ghcr.io/devcontainers/features/python:1": {},
+		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/devcontainers-contrib/features/npm-package:1": {}
+
+    },
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"streetsidesoftware.code-spell-checker",
+                "GitHub.copilot",
+                "VisualStudioExptTeam.vscodeintellicode",
+                "bradlc.vscode-tailwindcss",
+                "csstools.postcss",
+                "christian-kohler.npm-intellisense",
+                "dbaeumer.vscode-eslint"
+			]
+		}
+	},
+
+	// Use 'portsAttributes' to set default properties for specific forwarded ports. 
+	// More info: https://containers.dev/implementors/json_reference/#port-attributes
+	"portsAttributes": {
+		"8080": {
+			"label": "Flask Waitress",
+			"onAutoForward": "notify"
+		}
+	},
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "pip3 install -r requirements.txt && npm install --save"
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
