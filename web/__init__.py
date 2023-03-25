@@ -97,7 +97,75 @@ def get_news():
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
-        return api.get_top_headlines(language=f'{language}'.lower(),country=f'{country_code}'.lower())
+        return api.get_everything(language=f'{language}'.lower(),q=f'Italia'.lower(),sort_by='publishedAt')
+    else:
+        print("No news")
+        return "Nothing to see here..."
+
+def get_news_with_category(category):
+    db = create_database_client()
+    if announces_bogons():
+        return json.loads("""
+            {
+                "articles": [
+                    {
+                        "title": "STOP USING TIM",
+                        "source": {
+                            "name": "A person with IPv6"
+                        },
+                        "publishedAt": "1914-07-28T00:00:00Z",
+                        "description": "You are literally using AS6762 TELECOM ITALIA SPARKLE S.p.A."
+                    }
+                ]
+            }
+        """)
+    if db.auth.get_session():
+        client = create_app().test_client()
+        country_code = json.loads(client.get('/api/user').text)['country']
+        language = json.loads(client.get('/api/user').text)['language']
+    else:
+        if get_state_from_ip() in language_dict:
+            country_code,language = get_state_from_ip(),language_dict[get_state_from_ip()]
+        else:
+            country_code = language = get_state_from_ip()
+    api = connect_news_api()
+    if api:    
+        print(f"News For: {f'{country_code}'.lower()}")
+        return api.get_top_headlines(language=f'{language}'.lower(),country=f'{country_code}'.lower(),category=f'{category}'.lower())
+    else:
+        print("No news")
+        return "Nothing to see here..."
+
+def get_news_with_query(query):
+    db = create_database_client()
+    if announces_bogons():
+        return json.loads("""
+            {
+                "articles": [
+                    {
+                        "title": "STOP USING TIM",
+                        "source": {
+                            "name": "A person with IPv6"
+                        },
+                        "publishedAt": "1914-07-28T00:00:00Z",
+                        "description": "You are literally using AS6762 TELECOM ITALIA SPARKLE S.p.A."
+                    }
+                ]
+            }
+        """)
+    if db.auth.get_session():
+        client = create_app().test_client()
+        country_code = json.loads(client.get('/api/user').text)['country']
+        language = json.loads(client.get('/api/user').text)['language']
+    else:
+        if get_state_from_ip() in language_dict:
+            country_code,language = get_state_from_ip(),language_dict[get_state_from_ip()]
+        else:
+            country_code = language = get_state_from_ip()
+    api = connect_news_api()
+    if api:    
+        print(f"News For: {f'{country_code}'.lower()}")
+        return api.get_everything(language=f'{language}'.lower(),q=f'{query}'.replace('+', ' '),sort_by='publishedAt')
     else:
         print("No news")
         return "Nothing to see here..."

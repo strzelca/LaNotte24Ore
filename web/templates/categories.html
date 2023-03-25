@@ -1,0 +1,5 @@
+<nav class="sticky flex w-full p-3 items-center bg-white dark:bg-neutral-800 drop-shadow-xl">
+    {% for category in categories %} 
+    <a href="/categories?category={{category}}" class="mx-6 hover:text-teal-500">{{category.split() | first | capitalize}}</a>
+    {% endfor %}
+</nav>

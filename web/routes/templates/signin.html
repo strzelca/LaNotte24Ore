@@ -1,0 +1,26 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+<div class="flex justify-center items-center p-28">
+  <form action="/signup" method="post">
+    <div class="drop-shadow-xl rounded-xl bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700 border grid grid-cols-1 p-28">
+      <label for="email" class="mb-4">
+        <p class="mb-3">E-Mail</p>
+        <input type="email" name="email"
+        class="p-3 pl-12 pr-12 rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"/>
+      </label>
+      <label for="password" class="mb-4">
+        <p class="mb-3">Password</p>
+        <input type="password" name="password"
+        class="p-3 pl-12 pr-12 rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"/>
+      </label>
+      <div class="pt-4"></div>
+      <button class="rounded-md bg-orange-300 dark:bg-orange-500 border-neutral-500 dark:border-neutral-300 border p-3">Sign In</button>
+      <div class="pt-4"></div>
+      <a href="/forgot_password" class="text-sm underline text-neutral-400 text-center hover:text-neutral-200">Forgot your Password?</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
