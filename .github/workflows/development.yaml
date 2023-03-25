@@ -5,7 +5,9 @@ name: LaNotte24Ore CI/CD Development
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: 
+      - "dev"
+      - "frontend-dev"
   pull_request:
     branches: [ "dev" ]
 
