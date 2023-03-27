@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grid grid-cols-2">
+    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
+        <div class="flex flex-col items-center align-middle justify-center">
+                <button type="button" id="image" aria-expanded="true" aria-haspopup="true" class="rounded-full m-6 hover:bg-gray-400 transition duration-500">
+                <img
+                src="{{user_img}}" 
+                alt="user_img"
+                class="h-40 w-40 ring-2 m-2 ring-gray-300 rounded-full dark:text-gray-200 ">
+                </button>
+            <p class="text-4xl font-bold m-2">
+                {{user['name']}} {{user['surname']}}
+            </p>
+            <p class="text-lg italic m-2">
+                {{user['email']}}
+            </p>
+        </div>
+    </div>
+    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
+        
+    </div>
+</div>
+
+<div id="file-upload" class="hidden z-50 top-20 w-full h-full dark:bg-[rgba(0,0,0,0.16)] drop-shadow-xl bg-[rgba(255,255,255,0.16)]" role="menu" aria-orientation="vertical" aria-labelledby="image" tabindex="-1">
+    <div class="absolute right-[37.5%] top-1/4 w-1/4 h-1/4 text-dark rounded-lg bg-white dark:bg-neutral-800 dark:text-gray-50 border-neutral-300 dark:border-neutral-700 border">
+        <form action="/change_pic" method="post" enctype="multipart/form-data">
+        <div class="flex flex-col justify-center p-4">
+                <label for="file_input" class="mb-4">
+                    <p class="mb-3">Upload profile picture</p>
+                    <input class="p-2 w-full max-w-full rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700 file:-m-3 file:mr-3 file:p-3 file:px-4 file:bg-zinc-700 file:text-white file:border-0 file:border-solid file:border-inherit" id="pic" name="pic" type="file">
+                    <p class="text-sm text-neutral-400 hover:text-neutral-200 cursor-pointer my-1" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                </label>
+                <div class="flex justify-between">
+                    <button
+        class="rounded-md bg-teal-500 hover:bg-teal-400 border-neutral-500 dark:border-neutral-300 border p-2"
+      >
+        Update
+                </button>
+                    <a href="javascript:void(0)" id="close-upload"
+        class="rounded-md bg-red-500 hover:bg-red-400 border-neutral-500 dark:border-neutral-300 border p-2"
+      >
+        Cancel
+            </a>
+                </div>
+        </div>
+    </form>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/upload-image-menu.js') }}"></script>
+{% endblock %}
+

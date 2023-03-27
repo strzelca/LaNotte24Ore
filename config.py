@@ -2,6 +2,7 @@ import os
 import dotenv
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
+UPLOADSDIR = os.path.abspath(f'{os.path.dirname(__file__)}/web/uploads/tmp')
 
 dotenv.load_dotenv(os.path.join(BASEDIR, '.env'))
 dotenv.load_dotenv(os.path.join(BASEDIR, '.flaskenv'))
@@ -9,6 +10,7 @@ dotenv.load_dotenv(os.path.join(BASEDIR, '.flaskenv'))
 class Config(object):
     DEBUG = False
     TESTING = False
+    UPLOAD_FOLDER = UPLOADSDIR
     HOST = os.environ.get('FLASK_RUN_HOST') or "127.0.0.1"
     PORT = os.environ.get('FLASK_RUN_PORT') or 8080
 
@@ -21,6 +23,7 @@ class Config(object):
     NEWS_API_KEY = os.environ.get('NEWS_API_KEY') or ''
     WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY') or ''
     IPINFO_API_KEY = os.environ.get('IPINFO_API_KEY') or ''
+
 
 class ProductionConfig(Config):
     # production config

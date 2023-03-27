@@ -47,6 +47,10 @@
       <div class="pt-4"></div>
       <button
         class="rounded-md bg-teal-500 hover:bg-teal-400 border-neutral-500 dark:border-neutral-300 border p-3"
+        {% if redirect is defined %}
+        name="redirect"
+        value="{{redirect}}"
+        {% endif %}
       >
         Sign In
       </button>
