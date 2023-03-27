@@ -48,9 +48,9 @@ def test_login_get():
 def test_login_post():
     app = create_app('lanotte24ore.test')
     client = app.test_client()
-    response = client.post('/login', json={
-        "email": Config.AUTH_TEST_USER,
-        "password": Config.AUTH_TEST_PASSWORD
+    response = client.post('/login', data={
+        'email': Config.AUTH_TEST_USER,
+        'password': Config.AUTH_TEST_PASSWORD
     })
     assert response.status_code == 200
 

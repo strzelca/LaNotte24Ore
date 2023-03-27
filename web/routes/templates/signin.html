@@ -2,23 +2,54 @@
 
 {% block content %}
 
-<div class="flex justify-center items-center p-28">
-  <form action="/signup" method="post">
-    <div class="drop-shadow-xl rounded-xl bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700 border grid grid-cols-1 p-28">
+<div class="flex justify-center items-center m-20">
+  <form action="/login" method="post">
+    <div
+      class="drop-shadow-xl rounded-xl bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700 border grid grid-cols-1 p-24"
+    >
+      <div class="mb-8 text-center text-xl font-bold">
+        Sign-in to La Notte 24 Ore
+      </div>
+
+      {% if error is defined %}
+      <div class="mb-8 text-center text-lg italic text-red-500 flex justify-center align-middle">
+        <span class="material-symbols-rounded">
+          exclamation
+        </span> {{error}}
+      </div>
+      {% endif %}
       <label for="email" class="mb-4">
-        <p class="mb-3">E-Mail</p>
-        <input type="email" name="email"
-        class="p-3 pl-12 pr-12 rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"/>
+        <p class="mb-3">Email Address</p>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          class="p-3 w-full max-w-full rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"
+          {% if email is defined %} value="{{email}}" {% endif %}
+          />
       </label>
       <label for="password" class="mb-4">
         <p class="mb-3">Password</p>
-        <input type="password" name="password"
-        class="p-3 pl-12 pr-12 rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"/>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          class="p-3 w-full max-w-fullrounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"
+        />
       </label>
-      <div class="pt-4"></div>
-      <button class="rounded-md bg-orange-300 dark:bg-orange-500 border-neutral-500 dark:border-neutral-300 border p-3">Sign In</button>
+      <!--<label for="file_input">
+        <p class="mb-3">Upload profile picture</p>
+        <input class="p-3 w-full max-w-full rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700 file:-m-3 file:mr-3 file:p-3 file:px-4 file:bg-zinc-700 file:text-white file:border-0 file:border-solid file:border-inherit" id="file_input" type="file">
+        <p class="text-sm text-neutral-400 hover:text-neutral-200 cursor-pointer my-1" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+      </label>-->
       <div class="pt-4"></div>
       <a href="/forgot_password" class="text-sm underline text-neutral-400 text-center hover:text-neutral-200">Forgot your Password?</a>
+      <div class="pt-4"></div>
+      <button
+        class="rounded-md bg-teal-500 hover:bg-teal-400 border-neutral-500 dark:border-neutral-300 border p-3"
+      >
+        Sign In
+      </button>
     </div>
   </form>
 </div>

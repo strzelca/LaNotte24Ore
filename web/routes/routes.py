@@ -28,7 +28,8 @@ def index():
     location=get_location_from_ip()
     return render_template('index.html', 
         news=json.loads(json.dumps(get_news())),
-        user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+        user_img=storage.from_('profiles').get_public_url('default_user_female.png'),
+        isLoggedIn=get_full_user(db.auth.get_session()),
         weather=get_weather_from_location(location),
         weather_link=get_weather_link(location),
         weather_icon=get_weather_icon_from_location(location),
@@ -41,6 +42,7 @@ def categories():
     return render_template('category.html', 
         news=json.loads(json.dumps(get_news_with_category(request.args.get('category')))),
         user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+        isLoggedIn=get_full_user(db.auth.get_session()),
         weather=get_weather_from_location(location),
         weather_link=get_weather_link(location),
         weather_icon=get_weather_icon_from_location(location),
@@ -52,7 +54,9 @@ def search():
     location=get_location_from_ip()
     return render_template('search.html', 
         news=json.loads(json.dumps(get_news_with_query(request.args.get('search')))),
+        query=request.args.get('search'),
         user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+        isLoggedIn=get_full_user(db.auth.get_session()),
         weather=get_weather_from_location(location),
         weather_link=get_weather_link(location),
         weather_icon=get_weather_icon_from_location(location),
@@ -112,6 +116,7 @@ def signup():
         if err_c < len(elements):
             return render_template('signup.html',
                     user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+                    isLoggedIn=get_full_user(db.auth.get_session()),
                     weather=get_weather_from_location(location),
                     weather_link=get_weather_link(location),
                     weather_icon=get_weather_icon_from_location(location),
@@ -127,6 +132,7 @@ def signup():
     elif request.method == 'GET':
         return render_template('signup.html',
             user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+            isLoggedIn=get_full_user(db.auth.get_session()),
             weather=get_weather_from_location(location),
             weather_link=get_weather_link(location),
             weather_icon=get_weather_icon_from_location(location),
@@ -141,23 +147,70 @@ def signup():
 
 @register_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
+    location=get_location_from_ip()
     if request.method == 'POST':
-        if request.json == None:
-            return make_response("Empty Request", 404) 
-        status_code = 200
-        data = request.json
-        try:
-            response = db.auth.sign_in_with_password(credentials=data)
-        except errors.AuthApiError as e:
-            print(e)
-            status_code = 401
-        except errors.AuthInvalidCredentialsError as e:
-            print(e)
-            status_code = 401
+        elements = ['email', 'password']
+
+        err_c = 0
         
-        return make_response("Logged In", status_code)
+        for key, value in request.form.items():
+            if key in elements and value != '':
+                err_c = err_c+1
+        
+        if err_c < len(elements):
+            return render_template('signin.html',
+                    user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+                    isLoggedIn=get_full_user(db.auth.get_session()),
+                    weather=get_weather_from_location(location),
+                    weather_link=get_weather_link(location),
+                    weather_icon=get_weather_icon_from_location(location),
+                    categories=newsapi_const.categories,
+                    error="check all values"
+            )
+        else:
+            try:
+                response = db.auth.sign_in_with_password(credentials={
+                    'email': f"{request.form.get('email')}",
+                    'password': f"{request.form.get('password')}"
+                })
+            except errors.AuthApiError as e:
+                print(e)
+                return render_template('signin.html',
+                    user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+                    isLoggedIn=get_full_user(db.auth.get_session()),
+                    weather=get_weather_from_location(location),
+                    weather_link=get_weather_link(location),
+                    weather_icon=get_weather_icon_from_location(location),
+                    categories=newsapi_const.categories,
+                    error="check all values",
+                    email=request.form.get('email')
+                )
+            except errors.AuthInvalidCredentialsError as e:
+                print(e)
+                return render_template('signin.html',
+                    user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+                    isLoggedIn=get_full_user(db.auth.get_session()),
+                    weather=get_weather_from_location(location),
+                    weather_link=get_weather_link(location),
+                    weather_icon=get_weather_icon_from_location(location),
+                    categories=newsapi_const.categories,
+                    error="check all values",
+                    email=request.form.get('email')
+                )
+            return redirect('/')
+            
+        
+        return make_response("Error", 500)
+    
     elif request.method == 'GET':
-        return make_response("OwO", 200)
+        return render_template('signin.html',
+            user_img=storage.from_('profiles').get_public_url('default_user_female.png'), 
+            isLoggedIn=get_full_user(db.auth.get_session()),
+            weather=get_weather_from_location(location),
+            weather_link=get_weather_link(location),
+            weather_icon=get_weather_icon_from_location(location),
+            categories=newsapi_const.categories,
+        )
     else:
         return make_response("Not Found", 404)
 
@@ -167,12 +220,41 @@ def logout():
     user_session = db.auth.get_session()
     if user_session != None:
         db.auth.sign_out()
-        return make_response("Logged Out", 200)
+        location=get_location_from_ip()
+        return render_template('index.html', 
+            news=json.loads(json.dumps(get_news())),
+            user_img=storage.from_('profiles').get_public_url('default_user_female.png'),
+            isLoggedIn=get_full_user(db.auth.get_session()),
+            weather=get_weather_from_location(location),
+            weather_link=get_weather_link(location),
+            weather_icon=get_weather_icon_from_location(location),
+            categories=newsapi_const.categories
+        ) 
     else:
         return make_response("No user logged in", 401)
 
+
+@register_blueprint.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        db.auth.reset_password_email(
+            request.form.get('email') or ''
+        )
+        return render_template('forgot_password_sent.html')
+    elif request.method == 'GET':
+        return render_template('forgot_password.html')
+    else:
+        return make_response("Failed", 500)
+
 @register_blueprint.route('/about')
 def about():
-    return render_template('about.html')
-
+    location=get_location_from_ip()
+    return render_template(
+        'about.html',
+        isLoggedIn=get_full_user(db.auth.get_session()),
+        weather=get_weather_from_location(location),
+        weather_link=get_weather_link(location),
+        weather_icon=get_weather_icon_from_location(location),
+        categories=newsapi_const.categories
+    )
 from . import api

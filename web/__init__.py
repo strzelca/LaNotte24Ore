@@ -38,6 +38,31 @@ def create_storage_client():
         },
         is_async=False)
 
+def get_full_user(user_session):
+    if user_session != None:
+        args = str("filter: { id: { eq:" + user_session.user.id + " } }")
+        query = graphql_query('profiles', args)
+        data = json.loads(query.text)
+    
+        user_data = json.loads(query.text)['data']['profilesCollection']['edges'][0]['node']
+        print(user_data)
+
+        data = {
+            "id": user_session.user.id,
+            "name":user_data['name'],
+            "surname":user_data['surname'],
+            "email": user_session.user.email,
+            "country":user_data['country'],
+            "language":user_data['lang'],
+            "last_signin": user_session.user.last_sign_in_at.strftime("%d/%m/%Y, %H:%M:%S"),
+            "token": user_session.refresh_token,
+            "expiries_in": datetime.fromtimestamp(float(user_session.expires_at)).strftime("%d/%m/%Y, %H:%M:%S"),
+        }
+        return data
+    else:
+        return None
+            
+
 def graphql_query(query_filename, arg=None):
     with open(f'{os.path.dirname(__file__)}/graphql/{query_filename}.gql') as query_file:
         query = query_file.read()

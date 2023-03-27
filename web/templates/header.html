@@ -23,6 +23,7 @@
           placeholder="Search"
           name="search"
           class="text-dark bg-white dark:bg-neutral-800 dark:text-gray-50 px-4 py-2 hover:text-primary text-base font-normal focus:outline-none" 
+          {% if query is defined %} value="{{query}}" {% endif %}
           >
         </form>
       </div>
@@ -31,14 +32,36 @@
         <a href="{{weather_link}}" class="px-6 hover:text-primary">
           {{weather}}
         </a>
-        <a href="javascript:void(0)">
+        <!-- USER BUTTON -->
+        <button type="button" class="" id="menu-button" aria-expanded="true" aria-haspopup="true">
           <img
             src="{{user_img}}"
             alt=""
             class="h-10 w-10 ring-2 ring-gray-300 dark:text-gray-200 rounded-full"
           />
-        </a>
+        </button>
       </span>
     </div>
   </div>
 </header>
+
+<div id="header-dropdown" class="hidden z-50 top-20 right-4 w-1/6 rounded-lg drop-shadow-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-gray-500" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+  {% if isLoggedIn is none %} 
+  <div class="py-1" role="none">
+    <a href="/signup" class="text-neutral-900 dark:text-white block px-5 py-3 text-sm hover:bg-gray-200 hover:dark:bg-neutral-700 hover:underline" role="menuitem" tabindex="-1" id="menu-item-6">Sign-up</a>
+    <a href="/login" class="text-neutral-900 dark:text-white block px-5 py-3 text-sm hover:bg-gray-200 hover:dark:bg-neutral-700 hover:underline" role="menuitem" tabindex="-1" id="menu-item-6">Login</a>
+  </div>
+  {% else %}
+  <div class="py-1" role="none">
+    <p class="text-neutral-900 dark:text-white block px-5 py-3 text-sm" role="menuitem" tabindex="-1" id="menu-item-6">{{isLoggedIn['name']}} {{isLoggedIn['surname']}}</p>
+    <a href="/user" class="text-neutral-900 dark:text-white block px-5 py-3 text-sm hover:bg-gray-200 hover:dark:bg-neutral-700 hover:underline" role="menuitem" tabindex="-1" id="menu-item-6">
+      {{isLoggedIn['email']}}
+    </a>
+  </div>
+  <div class="py-1" role="none">
+    <a href="/logout" class="text-neutral-900 dark:text-white block px-5 py-3 text-sm hover:bg-gray-200 hover:dark:bg-neutral-700 hover:underline" role="menuitem" tabindex="-1" id="menu-item-6">Logout</a>
+  </div>
+  {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
