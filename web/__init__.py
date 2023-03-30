@@ -3,6 +3,7 @@ from flask import Flask
 from supabase.client import create_client as database_client
 from storage3 import create_client as storage_client
 from pyowm import OWM
+from pyowm.utils import timestamps
 from ipinfo import getHandler
 from config import Config
 from datetime import datetime
@@ -12,6 +13,8 @@ import json
 import requests
 import waitress
 import locale
+import airportsdata
+import re
 
 owm = OWM(Config.WEATHER_API_KEY)
 mgr = owm.weather_manager()
@@ -221,6 +224,39 @@ def get_weather_icon_from_location(location):
         return f"https://openweathermap.org/img/wn/{weather.weather_icon_name}@4x.png"
     return None
 
+def get_weather_widget():
+    handler = getHandler(Config.IPINFO_API_KEY)
+    details = handler.getDetails()
+    observation = mgr.weather_at_place(details.city)
+    res = requests.get(f"https://www.iata.org/en/publications/directories/code-search/?airport.search={details.city}")
+    data = res.text
+    content = re.findall(r'<td>([A-Z]{3})</td>', data)
+    codes = []
+    for td in content:
+        code = td[:3]
+        codes.append(code)
+    
+
+    airports = airportsdata.load('IATA')
+    icao_code = airports[codes[0]].get('icao')
+
+    res = requests.get(f"https://tgftp.nws.noaa.gov/data/observations/metar/stations/{icao_code}.TXT").text
+
+    if observation:
+        weather = observation.weather
+        data = {
+            'weather': str(weather.detailed_status).capitalize(),
+            'temp': f"{round(weather.temperature('celsius')['temp'])}°C",
+            'humidity': weather.humidity,
+            'wind': weather.wind(unit='knots'),
+            'city': details.city,
+            'region': details.region,
+            'country': details.country,
+            'icon': f"https://openweathermap.org/img/wn/{weather.weather_icon_name}@4x.png",
+            'metar': res.replace('\n', ' ')
+        }
+        return data
+    return None
 
 
 # # # # # # # # # # # # # # # # # # # # #

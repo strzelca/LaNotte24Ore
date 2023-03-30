@@ -52,11 +52,10 @@ def test_login_post():
         'email': Config.AUTH_TEST_USER,
         'password': Config.AUTH_TEST_PASSWORD
     })
-    assert response.status_code == 200
+    assert response.status_code == 302
 
 def test_logout():
     app = create_app('lanotte24ore.test')
     client = app.test_client()
     response = client.get('/logout')
-    assert response.status_code == 200
-
+    assert response.status_code == 302

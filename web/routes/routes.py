@@ -41,6 +41,7 @@ def index():
                            weather_link=get_weather_link(location),
                            weather_icon=get_weather_icon_from_location(
                                location),
+                            weather_widget=get_weather_widget(),
                            categories=newsapi_const.categories
                            )
 
@@ -57,6 +58,7 @@ def categories():
                            weather_link=get_weather_link(location),
                            weather_icon=get_weather_icon_from_location(
                                location),
+                            weather_widget=get_weather_widget(),
                            categories=newsapi_const.categories
                            )
 
@@ -74,6 +76,7 @@ def search():
                            weather_link=get_weather_link(location),
                            weather_icon=get_weather_icon_from_location(
                                location),
+                            weather_widget=get_weather_widget(),
                            categories=newsapi_const.categories
                            )
 
@@ -362,13 +365,13 @@ def user():
     if session != None:
         client = create_app().test_client()
         data = json.loads(client.get('/api/user').text)
-        favorites = db.table("favorites").select('article').eq('user_id', f'{session.user.id}').execute().data
-        articles = {'articles': []}
+        favorites = db.table("favorites").select('id, article').eq('user_id', f'{session.user.id}').execute().data
+        articles = {'articles': [], 'id': []}
         for favorite in favorites:
             article_str = favorite['article'].replace('\\"', '"')  # remove escaped quotes
-            article_json = json.loads(article_str)
-            articles['articles'].append(ast.literal_eval(article_json))
-        print(articles)
+            article_json = ast.literal_eval(json.loads(article_str))
+            articles['articles'].append(article_json)
+            articles['id'].append(favorite['id'])
 
         return render_template('user.html',
                             news=articles,
@@ -407,15 +410,20 @@ def change_user_settings():
 @register_blueprint.route('/favorite', methods=['GET', 'POST'])
 def favorite():
     if request.method == 'POST':
-        article = json.dumps(request.form.get("article") or '{}')
-        session = db.auth.get_session()
-        if session != None:
-            db.table("favorites").insert(
-                {
-                    'user_id': f'{session.user.id}',
-                    'article': article
-                }
-            ).execute()
+        if request.form.get('add') == "1":
+            article = json.dumps(request.form.get("article") or '{}')
+            session = db.auth.get_session()
+            if session != None:
+                db.table("favorites").insert(
+                    {
+                        'user_id': f'{session.user.id}',
+                        'article': article
+                    }
+                ).execute()
+        elif request.form.get('remove') == "1":
+            session = db.auth.get_session()
+            if session != None:
+                db.table("favorites").delete().eq('id   ', f'{request.form.get("id")}').execute()
     return redirect('/user')
 
 @register_blueprint.route('/forgot_password', methods=['GET', 'POST'])
