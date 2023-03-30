@@ -7,7 +7,6 @@
     "dev": "cross-env TAILWIND_MODE=watch NODE_ENV=development postcss ./web/static/src/css/style.css -o ./web/static/css/style.css -w",
     "build:prod": "cross-env TAILWIND_MODE=build NODE_ENV=production postcss ./web/static/src/css/style.css -o ./web/static/css/style.css",
     "build:dev": "cross-env TAILWIND_MODE=build NODE_ENV=development postcss ./web/static/src/css/style.css -o ./web/static/css/style.css"
-
   },
   "repository": {
     "type": "git",
@@ -35,6 +34,7 @@
   },
   "devDependencies": {
     "install": "^0.13.0",
-    "npm": "^9.1.2"
+    "npm": "^9.1.2",
+    "tailwindcss-filters": "^3.0.0"
   }
 }

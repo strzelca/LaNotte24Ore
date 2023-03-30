@@ -38,7 +38,6 @@
         </div>
     </div>
     <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
-        <form action="/favorite" method="post">
         {% for article in news['articles'] if not 'dagospia' in article['url'] %}
         <div class="p-2 flex">
             {% if loop.index is divisibleby(2) %}
@@ -56,11 +55,6 @@
                 <span class="text-xs">{{article['publishedAt']|format_datetime}}</span> 
             </p>
             <p class="text-sm">{{article['description']}}</p>
-            {% if isLoggedIn is defined %}
-            <input type="text" name="article" value="{{article}}" hidden>
-            <input type="text" name="add" value="1" hidden>
-            <button type="submit" class="text-sm text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200">Aggiungi ai preferiti</button>
-            {% endif %}
             </div>
             {% if loop.index is not divisibleby(2) %}
                 {% if article['urlToImage'] is not none %} 
@@ -75,9 +69,7 @@
                 <div class="border-b border-gray-400"></div>
             <div class="pb-3"></div>
         {% endif %}
-
         {% endfor %}
-    </form>
     </div>
 </div>
 {% endblock %}

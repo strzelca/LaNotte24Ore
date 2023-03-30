@@ -38,46 +38,20 @@
         </div>
     </div>
     <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
-        <form action="/favorite" method="post">
+        <div class="grid grid-cols-2 gap-4">
         {% for article in news['articles'] if not 'dagospia' in article['url'] %}
         <div class="p-2 flex">
-            {% if loop.index is divisibleby(2) %}
-                {% if article['urlToImage'] is not none %} 
-                    <img src="{{article['urlToImage']}}" alt="{{article['title']}}" width="160" height="40"
-                        class="pr-3 rounded-lg"
-                    >
-                {% endif %}
-            {% endif %}
             <div>
-            <a href="{{article['url']}}" class="text-lg font-medium hover:text-sky-500">{{article['title']}}</a>
-            <p class="text-xs">di 
+                <a href="{{article['url']}}" class="text-lg font-medium hover:text-sky-500">{{article['title']}}</a>
+                <p class="text-xs">di 
                 <span class="text-xs font-medium">{{article['source']['name']}}</span> 
                 - 
                 <span class="text-xs">{{article['publishedAt']|format_datetime}}</span> 
             </p>
-            <p class="text-sm">{{article['description']}}</p>
-            {% if isLoggedIn is defined %}
-            <input type="text" name="article" value="{{article}}" hidden>
-            <input type="text" name="add" value="1" hidden>
-            <button type="submit" class="text-sm text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200">Aggiungi ai preferiti</button>
-            {% endif %}
             </div>
-            {% if loop.index is not divisibleby(2) %}
-                {% if article['urlToImage'] is not none %} 
-                    <img src="{{article['urlToImage']}}" alt="{{article['title']}}" width="160" height="40"
-                        class="pl-2 rounded-lg"
-                    >
-                {% endif %}            
-            {% endif %}
         </div>
-        {% if loop.index is divisibleby(4) %}
-            <div class="pt-3"></div>
-                <div class="border-b border-gray-400"></div>
-            <div class="pb-3"></div>
-        {% endif %}
-
         {% endfor %}
-    </form>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,38 @@
+<!-- Raffaele Bracci -->
+<footer class="bg-white bottom-0 dark:bg-neutral-800 drop-shadow-xl">
+    <div class="flex justify-around max-w-full w-full text-left py-4">
+        <div class="basis-1/6 flex flex-col text-left">
+            <picture>
+                <source srcset="{{ url_for('static', filename='assets/img/logo/long_logo_dark.png') }}" media="(prefers-color-scheme: dark)">
+                <img
+                  src="{{ url_for('static', filename='assets/img/logo/oneline_logo_nobg.png') }}"
+                />
+            </picture>
+            <div class="text-neutral-700 dark:text-neutral-400 text-sm my-1">
+                <p>2023, La Notte 24 Ore. GPLv3 License</p>
+            </div>
+            <div class="border-b border-neutral-400 dark:border-neutral-600 my-3"></div>
+            <a href="https://github.com/owosrl/LaNotte24Ore">
+                <span class="material-symbols-rounded text-neutral-500 hover:text-neutral-300">
+                    code
+                </span>
+            </a>
+        </div>
+        <div class="basis-1/6"></div>
+        <div class="basis-1/6">
+            <div class="text-dark dark:text-white mb-4 font-medium">MAIN PAGES</div>
+            <div class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200 my-0.5"><a href="/">Home</a></div>
+            <div class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200 my-0.5"><a href="/about">About</a></div>
+        </div>
+        <div class="basis-1/6">
+            <div class="text-dark dark:text-white mb-4 font-medium">LEGAL INFO</div>
+            <div class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200 my-0.5"><a href="/policy">Privacy Policy</a></div>
+            <div class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200 my-0.5"><a href="https://github.com/owosrl/LaNotte24Ore/blob/main/LICENSE">License</a></div>
+        </div>
+        <div class="basis-1/6">
+            <div class="text-dark dark:text-white mb-4 font-medium">CONTACTS</div>
+            <div class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200 my-0.5"><a href="mailto:admin@lanotte24ore.it">admin@lanotte24ore.com</a></div>
+            <div class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200 my-0.5"><a href="tel:+49124004695">+49 124004695</a></div>
+        </div>
+    </div>
+</footer>

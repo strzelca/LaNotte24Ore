@@ -2,14 +2,24 @@
 
 {% block content %}
 
-<div class="m-12 grid grid-cols-2">
+<div class="m-12 grid grid-cols-2 ">
     <div class="text-left text-4xl font-bold">
-        <h1>Benvenut* sul nostro sito, dove l'eleganza e la professionalità sono la norma.</h1>
+        <h1>Benvenuto nel nostro sito, dove l'eleganza e la professionalità sono la norma.</h1>
         <h1>Siamo felici che tu sia qui con noi, perché sappiamo che meriti solo il meglio e siamo pronti</h1>
         <h1>offrirtelo con orgoglio.</h1>
     </div>
     <div>
-        <img src=""> <!-- Logo de "La Notte 24 ore" -->
+        <img
+              src="{{ url_for('static', filename='assets/img/article/example_site.png') }}"
+        />
+    </div>
+    <div class="flex col-span-2 justify-center m-8">
+        <picture>
+            <source srcset="{{ url_for('static', filename='assets/img/logo/long_logo_dark.png') }}" media="(prefers-color-scheme: dark">
+            <img
+              src="{{ url_for('static', filename='assets/img/logo/oneline_logo_nobg.png') }}"
+            />
+          </picture>
     </div>
 </div>
 

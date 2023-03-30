@@ -11,11 +11,8 @@ def api_user():
     client = database_client(Config.DATABASE_URI, Config.DATABASE_KEY)
     user_session = client.auth.get_session()
     if user_session != None and user_session.user != None and user_session.user.last_sign_in_at != None and user_session.expires_at != None:
-        args = str("filter: { id: { eq:" + user_session.user.id + " } }")
-        query = graphql_query('profiles', args)
-        user_data = json.loads(query.text)['data']['profilesCollection']['edges'][0]['node']
-        print(user_data)
-
+        query = client.table('profiles').select('name, surname, country, lang').eq('id', f'{user_session.user.id}').execute()
+        user_data = query.data[0]
         data = {
             "id": user_session.user.id,
             "name":user_data['name'],
@@ -28,7 +25,6 @@ def api_user():
             "expiries_in": datetime.fromtimestamp(float(user_session.expires_at)).strftime("%d/%m/%Y, %H:%M:%S"),
         }
 
-        print(data)            
         resp = make_response(json.dumps(data), 200)
         resp.mimetype = "text/json"
         return resp
