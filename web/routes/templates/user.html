@@ -1,53 +1,158 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="grid grid-cols-2">
-    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
-        <div class="flex flex-col items-center align-middle justify-center">
-                <button type="button" id="image" aria-expanded="true" aria-haspopup="true" class="rounded-full m-6 hover:bg-gray-400 transition duration-500">
-                <img
-                src="{{user_img}}" 
-                alt="user_img"
-                class="h-40 w-40 ring-2 m-2 ring-gray-300 rounded-full dark:text-gray-200 ">
-                </button>
-            <p class="text-4xl font-bold m-2">
-                {{user['name']}} {{user['surname']}}
-            </p>
-            <p class="text-lg italic m-2">
-                {{user['email']}}
-            </p>
+  <div
+    class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700"
+  >
+    <div class="flex flex-col items-center align-middle justify-center">
+      <button
+        type="button"
+        id="image"
+        aria-expanded="true"
+        aria-haspopup="true"
+        class="rounded-full m-6 hover:bg-gray-400 transition duration-500"
+      >
+        <img
+          src="{{user_img}}"
+          alt="user_img"
+          class="h-40 w-40 ring-2 m-2 ring-gray-300 rounded-full dark:text-gray-200"
+        />
+      </button>
+      <form action="/change_user_settings" method="post">
+        <div
+          class="m-2 bg-gray-100 dark:bg-neutral-700"
+        >
+          <input
+            class="text-4xl text-center font-bold bg-gray-100 dark:bg-neutral-700 focus:outline-none"
+            type="text"
+            name="name"
+            value="{{user['name']}} {{user['surname']}}"
+          />
         </div>
+      <p class="text-lg text-center italic m-2">{{user['email']}}</p>
+        <div
+          class="text-center grid grid-cols-2 gap-3 m-2 bg-gray-100 dark:bg-neutral-700"
+        >
+          <label for="country" class="mb-4 mr-1">
+            <p class="mb-3">Country</p>
+            <select
+              id="country"
+              name="country"
+              class="p-3 w-full max-w-full rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"
+            >
+              {% for name, country in countries.items() %} {% if user['country']
+              == country %}
+              <option value="{{ country }}" selected>{{ name }}</option>
+              {% else %}
+              <option value="{{ country }}">{{ name }}</option>
+              {% endif %} {% endfor %}
+            </select>
+          </label>
+          <label for="lang" class="mb-4 ml-1">
+            <p class="mb-3">Language</p>
+            <select
+              id="lang"
+              name="lang"
+              class="p-3 w-full max-w-full rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700"
+            >
+              {% for name, lang in languages.items() %} {% if user['language']
+              == lang %}
+              <option value="{{ lang }}" selected>{{ name }}</option>
+              {% else %}
+              <option value="{{ lang }}">{{ name }}</option>
+              {% endif %} {% endfor %}
+            </select>
+          </label>
+          <button
+            class="col-span-2 rounded-md bg-teal-500 hover:bg-teal-400 border-neutral-500 dark:border-neutral-300 border p-3">
+            Update
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
-        
-    </div>
+  </div>
+  <div
+    class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700"
+  >
+  {% for article in news['articles'] if not 'dagospia' in article['url'] %}
+        <div class="p-2 flex">
+            {% if loop.index is divisibleby(2) %}
+                {% if article['urlToImage'] is not none %} 
+                    <img src="{{article['urlToImage']}}" alt="{{article['title']}}" width="160" height="40"
+                        class="pr-3 rounded-lg"
+                    >
+                {% endif %}
+            {% endif %}
+            <div>
+            <a href="{{article['url']}}" class="text-lg font-medium hover:text-sky-500">{{article['title']}}</a>
+            <p class="text-xs">di 
+                <span class="text-xs font-medium">{{article['source']['name']}}</span> 
+                - 
+                <span class="text-xs">{{article['publishedAt']|format_datetime}}</span> 
+            </p>
+            <p class="text-sm">{{article['description']}}</p>
+            </div>
+            {% if loop.index is not divisibleby(2) %}
+                {% if article['urlToImage'] is not none %} 
+                    <img src="{{article['urlToImage']}}" alt="{{article['title']}}" width="160" height="40"
+                        class="pl-2 rounded-lg"
+                    >
+                {% endif %}            
+            {% endif %}
+        </div>
+        {% if loop.index is divisibleby(4) %}
+            <div class="pt-3"></div>
+                <div class="border-b border-gray-400"></div>
+            <div class="pb-3"></div>
+        {% endif %}
+        {% endfor %}
+</div>
 </div>
 
-<div id="file-upload" class="hidden z-50 top-20 w-full h-full dark:bg-[rgba(0,0,0,0.16)] drop-shadow-xl bg-[rgba(255,255,255,0.16)]" role="menu" aria-orientation="vertical" aria-labelledby="image" tabindex="-1">
-    <div class="absolute right-[37.5%] top-1/4 w-1/4 h-1/4 text-dark rounded-lg bg-white dark:bg-neutral-800 dark:text-gray-50 border-neutral-300 dark:border-neutral-700 border">
-        <form action="/change_pic" method="post" enctype="multipart/form-data">
-        <div class="flex flex-col justify-center p-4">
-                <label for="file_input" class="mb-4">
-                    <p class="mb-3">Upload profile picture</p>
-                    <input class="p-2 w-full max-w-full rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700 file:-m-3 file:mr-3 file:p-3 file:px-4 file:bg-zinc-700 file:text-white file:border-0 file:border-solid file:border-inherit" id="pic" name="pic" type="file">
-                    <p class="text-sm text-neutral-400 hover:text-neutral-200 cursor-pointer my-1" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
-                </label>
-                <div class="flex justify-between">
-                    <button
-        class="rounded-md bg-teal-500 hover:bg-teal-400 border-neutral-500 dark:border-neutral-300 border p-2"
-      >
-        Update
-                </button>
-                    <a href="javascript:void(0)" id="close-upload"
-        class="rounded-md bg-red-500 hover:bg-red-400 border-neutral-500 dark:border-neutral-300 border p-2"
-      >
-        Cancel
-            </a>
-                </div>
+<div
+  id="file-upload"
+  class="hidden z-50 top-20 w-full h-full dark:bg-[rgba(0,0,0,0.16)] drop-shadow-xl bg-[rgba(255,255,255,0.16)]"
+  role="menu"
+  aria-orientation="vertical"
+  aria-labelledby="image"
+  tabindex="-1"
+>
+  <div
+    class="absolute right-[37.5%] top-1/4 w-1/4 h-1/4 text-dark rounded-lg bg-white dark:bg-neutral-800 dark:text-gray-50 border-neutral-300 dark:border-neutral-700 border"
+  >
+    <form action="/change_pic" method="post" enctype="multipart/form-data">
+      <div class="flex flex-col justify-center p-4">
+        <label for="file_input" class="mb-4">
+          <p class="mb-3">Upload profile picture</p>
+          <input
+            class="p-2 w-full max-w-full rounded-md border bg-white border-neutral-300 dark:bg-neutral-800 dark:border-neutral-700 file:-m-3 file:mr-3 file:p-3 file:px-4 file:bg-zinc-700 file:text-white file:border-0 file:border-solid file:border-inherit"
+            id="pic"
+            name="pic"
+            type="file"
+          />
+          <p
+            class="text-sm text-neutral-400 hover:text-neutral-200 cursor-pointer my-1"
+            id="file_input_help"
+          >
+            SVG, PNG, JPG or GIF (MAX. 800x400px).
+          </p>
+        </label>
+        <div class="flex justify-between">
+          <button
+            class="rounded-md bg-teal-500 hover:bg-teal-400 border-neutral-500 dark:border-neutral-300 border p-2"
+          >
+            Update
+          </button>
+          <a
+            href="javascript:void(0)"
+            id="close-upload"
+            class="rounded-md bg-red-500 hover:bg-red-400 border-neutral-500 dark:border-neutral-300 border p-2"
+          >
+            Cancel
+          </a>
         </div>
+      </div>
     </form>
-    </div>
+  </div>
 </div>
 <script src="{{ url_for('static', filename='js/upload-image-menu.js') }}"></script>
 {% endblock %}
-

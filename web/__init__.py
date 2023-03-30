@@ -6,7 +6,8 @@ from pyowm import OWM
 from ipinfo import getHandler
 from config import Config
 from datetime import datetime
-from newsapi import NewsApiClient
+from newsapi import NewsApiClient, const as newsapi_const
+import country_converter as coco
 import json
 import requests
 import waitress
@@ -40,34 +41,35 @@ def create_storage_client():
 
 def get_full_user(user_session):
     if user_session != None:
-        args = str("filter: { id: { eq:" + user_session.user.id + " } }")
-        query = graphql_query('profiles', args)
-        data = json.loads(query.text)
-    
-        user_data = json.loads(query.text)['data']['profilesCollection']['edges'][0]['node']
-        print(user_data)
-
-        data = {
-            "id": user_session.user.id,
-            "name":user_data['name'],
-            "surname":user_data['surname'],
-            "email": user_session.user.email,
-            "country":user_data['country'],
-            "language":user_data['lang'],
-            "last_signin": user_session.user.last_sign_in_at.strftime("%d/%m/%Y, %H:%M:%S"),
-            "token": user_session.refresh_token,
-            "expiries_in": datetime.fromtimestamp(float(user_session.expires_at)).strftime("%d/%m/%Y, %H:%M:%S"),
-        }
+        client = create_app().test_client()
+        data = json.loads(client.get('/api/user').text)
         return data
     else:
         return None
             
 
+def get_image():
+    storage = create_storage_client()
+    db = create_database_client()
+    session = db.auth.get_session()
+    url = storage.from_('profiles').get_public_url(
+                            'default_user_female.png')
+    
+    if session != None:
+        res = db.from_('profiles').select('profile_pic').match({"id": f'{session.user.id}'}).execute()
+        print(res.data[0])
+        if res.data[0]['profile_pic'] not in ['', None] :
+            url = storage.from_('profiles').get_public_url(
+                               res.data[0]['profile_pic'])
+        else:
+            url = storage.from_('profiles').get_public_url(
+                               'default_user_female.png') 
+    return url
+
 def graphql_query(query_filename, arg=None):
     with open(f'{os.path.dirname(__file__)}/graphql/{query_filename}.gql') as query_file:
         query = query_file.read()
         if arg != None:
-            print(query)
             query = query.replace("ARG", arg)
         resp = requests.post(
             f'{Config.DATABASE_URI}/graphql/v1',
@@ -115,14 +117,14 @@ def get_news():
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        if get_state_from_ip() in language_dict:
+        if get_state_from_ip() in newsapi_const.languages:
             country_code,language = get_state_from_ip(),language_dict[get_state_from_ip()]
         else:
             country_code = language = get_state_from_ip()
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
-        return api.get_everything(language=f'{language}'.lower(),q=f'Italia'.lower(),sort_by='publishedAt')
+        return api.get_everything(language=f'{language}'.lower(),q=f"{coco.convert(names=country_code, to='name')}".lower(),sort_by='publishedAt')
     else:
         print("No news")
         return "Nothing to see here..."
@@ -149,7 +151,7 @@ def get_news_with_category(category):
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        if get_state_from_ip() in language_dict:
+        if get_state_from_ip() in newsapi_const.languages:
             country_code,language = get_state_from_ip(),language_dict[get_state_from_ip()]
         else:
             country_code = language = get_state_from_ip()
