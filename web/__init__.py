@@ -154,8 +154,8 @@ def get_news_with_category(category):
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        if str(get_state_from_ip()).lower() in language_dict:
-            country_code,language = get_state_from_ip(),language_dict[str(get_state_from_ip()).lower()]
+        if str(get_state_from_ip()).upper() in language_dict:
+            country_code,language = get_state_from_ip(),language_dict[str(get_state_from_ip()).upper()]
         else:
             country_code = language = get_state_from_ip()
     api = connect_news_api()
@@ -188,8 +188,8 @@ def get_news_with_query(query):
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        if str(get_state_from_ip()).lower() in language_dict:
-            country_code,language = get_state_from_ip(),language_dict[str(get_state_from_ip()).lower()]
+        if str(get_state_from_ip()).upper() in language_dict:
+            country_code,language = get_state_from_ip(),language_dict[str(get_state_from_ip()).upper()]
         else:
             country_code = language = get_state_from_ip()
     api = connect_news_api()
