@@ -154,7 +154,7 @@ def get_news_with_category(category):
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        if get_state_from_ip() in newsapi_const.languages:
+        if get_state_from_ip() in language_dict:
             country_code,language = get_state_from_ip(),language_dict[get_state_from_ip()]
         else:
             country_code = language = get_state_from_ip()
