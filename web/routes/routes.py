@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from . import api
 import json
 from flask import render_template, request, make_response, redirect
@@ -368,7 +370,8 @@ def user():
         favorites = db.table("favorites").select('id, article').eq('user_id', f'{session.user.id}').execute().data
         articles = {'articles': [], 'id': []}
         for favorite in favorites:
-            article_str = favorite['article'].replace('\\"', '"')  # remove escaped quotes
+            article_str = favorite['article']
+            print(article_str)
             article_json = ast.literal_eval(json.loads(article_str))
             articles['articles'].append(article_json)
             articles['id'].append(favorite['id'])
@@ -411,13 +414,13 @@ def change_user_settings():
 def favorite():
     if request.method == 'POST':
         if request.form.get('add') == "1":
-            article = json.dumps(request.form.get("article") or '{}')
+            article = json.dumps(request.form.get("article") or '{}').encode('utf-8')
             session = db.auth.get_session()
             if session != None:
                 db.table("favorites").insert(
                     {
                         'user_id': f'{session.user.id}',
-                        'article': article
+                        'article': article.decode()
                     }
                 ).execute()
         elif request.form.get('remove') == "1":
