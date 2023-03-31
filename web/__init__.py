@@ -3,7 +3,6 @@ from flask import Flask
 from supabase.client import create_client as database_client
 from storage3 import create_client as storage_client
 from pyowm import OWM
-from pyowm.utils import timestamps
 from ipinfo import getHandler
 from config import Config
 from datetime import datetime
@@ -11,8 +10,6 @@ from newsapi import NewsApiClient, const as newsapi_const
 import country_converter as coco
 import json
 import requests
-import waitress
-import locale
 import airportsdata
 import re
 

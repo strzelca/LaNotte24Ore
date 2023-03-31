@@ -8,7 +8,6 @@ from newsapi import const as newsapi_const
 import country_converter as coco
 from iso639 import languages as iso_languages
 from . import register_blueprint
-from postgrest import types
 import ast
 from storage3 import utils
 from web import *
@@ -500,10 +499,10 @@ def change_pic():
                 pic.save(path)
                 with open(path, 'rb+'):
                     try:
-                        db.storage().from_('profiles').upload(f"{session.user.id}.{pic.filename.split('.')[1]}", os.path.abspath(path))
+                        storage.from_('profiles').upload(f"{session.user.id}.{pic.filename.split('.')[1]}", os.path.abspath(path))
                     except utils.StorageException:
-                        db.storage().from_('profiles').remove([f"{session.user.id}.{pic.filename.split('.')[1]}"])
-                        db.storage().from_('profiles').upload(f"{session.user.id}.{pic.filename.split('.')[1]}", os.path.abspath(path))
+                        storage.from_('profiles').remove([f"{session.user.id}.{pic.filename.split('.')[1]}"])
+                        storage.from_('profiles').upload(f"{session.user.id}.{pic.filename.split('.')[1]}", os.path.abspath(path))
                     db.table('profiles').update({"profile_pic": f"{session.user.id}.{pic.filename.split('.')[1]}"}).eq("id", f'{session.user.id}').execute()
                 os.remove(path)
                 redirect('/user')
