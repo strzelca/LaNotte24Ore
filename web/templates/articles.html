@@ -1,0 +1,41 @@
+{% for article in news['articles'] if not 'dagospia' in article['url'] %}
+{% if loop.index <= 10 %}
+<div class="p-2 flex">
+  {% if loop.index is divisibleby(2) %} {% if article['urlToImage'] is not none
+  %}
+  <img
+    src="{{article['urlToImage']}}"
+    alt="{{article['title']}}"
+    width="160"
+    height="40"
+    class="pr-3 rounded-lg"
+  />
+  {% endif %} {% endif %}
+  <div>
+    <a href="{{article['url']}}" class="text-lg font-medium hover:text-sky-500"
+      >{{article['title']}}</a
+    >
+    <p class="text-xs">
+      di
+      <span class="text-xs font-medium">{{article['source']['name']}}</span>
+      -
+      <span class="text-xs">{{article['publishedAt']|format_datetime}}</span>
+    </p>
+    <p class="text-sm">{{article['description']}}</p>
+  </div>
+  {% if loop.index is not divisibleby(2) %} {% if article['urlToImage'] is not
+  none %}
+  <img
+    src="{{article['urlToImage']}}"
+    alt="{{article['title']}}"
+    width="160"
+    height="40"
+    class="pl-2 rounded-lg"
+  />
+  {% endif %} {% endif %}
+</div>
+{% if loop.index is divisibleby(4) %}
+<div class="pt-3"></div>
+<div class="border-b border-gray-400"></div>
+<div class="pb-3"></div>
+{% endif %} {% endif %} {% endfor %}

@@ -30,46 +30,46 @@ storage = create_storage_client()
 
 @register_blueprint.route('/')
 def index():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     session = db.auth.get_session()
            
 
     return render_template('index.html',
-                           news=json.loads(json.dumps(get_news())),
+                           news=json.loads(json.dumps(get_news(request.remote_addr))),
                            user_img=get_image(),
                            isLoggedIn=get_full_user(db.auth.get_session()),
                            weather=get_weather_from_location(location),
                            weather_link=get_weather_link(location),
                            weather_icon=get_weather_icon_from_location(
                                location),
-                            weather_widget=get_weather_widget(),
+                            weather_widget=get_weather_widget(request.remote_addr),
                            categories=newsapi_const.categories
                            )
 
 
 @register_blueprint.route('/categories')
 def categories():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     return render_template('category.html',
                            news=json.loads(json.dumps(
-                               get_news_with_category(request.args.get('category')))),
+                               get_news_with_category(request.args.get('category'), request.remote_addr))),
                            user_img=get_image(),
                            isLoggedIn=get_full_user(db.auth.get_session()),
                            weather=get_weather_from_location(location),
                            weather_link=get_weather_link(location),
                            weather_icon=get_weather_icon_from_location(
                                location),
-                            weather_widget=get_weather_widget(),
+                            weather_widget=get_weather_widget(request.remote_addr),
                            categories=newsapi_const.categories
                            )
 
 
 @register_blueprint.route('/search')
 def search():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     return render_template('search.html',
                            news=json.loads(json.dumps(
-                               get_news_with_query(request.args.get('search')))),
+                               get_news_with_query(request.args.get('search'), request.remote_addr))),
                            query=request.args.get('search'),
                            user_img=get_image(),
                            isLoggedIn=get_full_user(db.auth.get_session()),
@@ -77,14 +77,14 @@ def search():
                            weather_link=get_weather_link(location),
                            weather_icon=get_weather_icon_from_location(
                                location),
-                            weather_widget=get_weather_widget(),
+                            weather_widget=get_weather_widget(request.remote_addr),
                            categories=newsapi_const.categories
                            )
 
 
 @register_blueprint.route('/signup', methods=['GET', 'POST'])
 def signup():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     countries_fullname = []
     languages_fullname = []
 
@@ -233,7 +233,7 @@ def signup():
 
 @register_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     if request.method == 'POST':
         elements = ['email', 'password']
 
@@ -330,14 +330,14 @@ def logout():
     user_session = db.auth.get_session()
     if user_session != None:
         db.auth.sign_out()
-        location = get_location_from_ip()
+        location = get_location_from_ip(request.remote_addr)
         return redirect('/')
     else:
         return redirect('/')
     
 @register_blueprint.route('/user', methods=['GET', 'POST'])
 def user():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     countries_fullname = []
     languages_fullname = []
 
@@ -370,7 +370,6 @@ def user():
         articles = {'articles': [], 'id': []}
         for favorite in favorites:
             article_str = favorite['article']
-            print(article_str)
             article_json = ast.literal_eval(json.loads(article_str))
             articles['articles'].append(article_json)
             articles['id'].append(favorite['id'])
@@ -395,7 +394,6 @@ def user():
 def change_user_settings():
     if request.method == "POST":
         session = db.auth.get_session()
-        print(f'Response: {session}')
         if session != None:
             form_data = f'{request.form.get("name")}'.split(' ')
             res = db.table('profiles').update(
@@ -430,7 +428,7 @@ def favorite():
 
 @register_blueprint.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     if request.method == 'POST':
         db.auth.reset_password_email(
             request.form.get('email') or ''
@@ -459,7 +457,7 @@ def forgot_password():
 
 @register_blueprint.route('/about')
 def about():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     return render_template(
         'about.html',
         isLoggedIn=get_full_user(db.auth.get_session()),
@@ -472,7 +470,7 @@ def about():
 
 @register_blueprint.route('/policy')
 def policy():
-    location = get_location_from_ip()
+    location = get_location_from_ip(request.remote_addr)
     return render_template(
         'policy.html',
         isLoggedIn=get_full_user(db.auth.get_session()),

@@ -1,75 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="grid grid-cols-2">
-    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
-        <div class="flex flex-col justify-center items-center m-8">
-            <div class="grid grid-cols-2 p-12 bg-neutral-200 dark:bg-neutral-600 rounded-xl shadow-xl">
-                <p class="text-4xl font-bold col-span-2 text-center">{{weather_widget['weather']}}</p>
-               <div>
-                    <img src="{{weather_widget['icon']}}" alt="">
-               </div> 
-               <div class="flex justify-center items-center align-middle">
-                    <div class="flex flex-col align-middle">
-                        <p class="text-4xl font-bold m-2"><span class="material-symbols-rounded text-yellow-500">
-                            device_thermostat
-                            </span> {{weather_widget['temp']}}</p>
-                        <p class="text-4xl font-bold m-2"><span class="material-symbols-rounded text-blue-500">
-                            humidity_mid
-                            </span> {{weather_widget['humidity']}}%</p>
-                    </div>
-                    <div class="flex flex-col align-middle">
-                        <p class="text-4xl font-bold m-2"><span class="material-symbols-rounded text-gray-500">
-                            air
-                            </span> {{'%0.2f'| format(weather_widget['wind']['speed']|float)}}kt</p>
-                            <p class="text-4xl font-bold m-2"><span class="material-symbols-rounded text-gray-500">
-                                north_west
-                                </span> {{weather_widget['wind']['deg']}}°</p>
-                    </div>
-               </div>
-               <p class="text-4xl col-span-2 mb-4 italic text-center"><span class="material-symbols-rounded">
-                map
-                </span> {{weather_widget['city']}}, {{weather_widget['region']}}, {{weather_widget['country']}}</p>
-            </div>
-            <div class="my-12 w-[75%]">
-                <p class="text-lg font-bold mb-3">Current METAR for your location</p>
-                <p class="italic">{{weather_widget['metar']}}</p>
-            </div>
-        </div>
+<div class="grid grid-cols-5">
+    <div class="col-span-3 m-8 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
+        {% include "articles.html" %}
     </div>
-    <div class="m-11 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
-        {% for article in news['articles'] if not 'dagospia' in article['url'] %}
-        <div class="p-2 flex">
-            {% if loop.index is divisibleby(2) %}
-                {% if article['urlToImage'] is not none %} 
-                    <img src="{{article['urlToImage']}}" alt="{{article['title']}}" width="160" height="40"
-                        class="pr-3 rounded-lg"
-                    >
-                {% endif %}
-            {% endif %}
-            <div>
-            <a href="{{article['url']}}" class="text-lg font-medium hover:text-sky-500">{{article['title']}}</a>
-            <p class="text-xs">di 
-                <span class="text-xs font-medium">{{article['source']['name']}}</span> 
-                - 
-                <span class="text-xs">{{article['publishedAt']|format_datetime}}</span> 
-            </p>
-            <p class="text-sm">{{article['description']}}</p>
-            </div>
-            {% if loop.index is not divisibleby(2) %}
-                {% if article['urlToImage'] is not none %} 
-                    <img src="{{article['urlToImage']}}" alt="{{article['title']}}" width="160" height="40"
-                        class="pl-2 rounded-lg"
-                    >
-                {% endif %}            
-            {% endif %}
-        </div>
-        {% if loop.index is divisibleby(4) %}
-            <div class="pt-3"></div>
-                <div class="border-b border-gray-400"></div>
-            <div class="pb-3"></div>
-        {% endif %}
-        {% endfor %}
+    <div class="col-span-2 m-8 p-5 rounded-2xl drop-shadow-xl bg-gray-100 dark:bg-neutral-700">
+        {% include "meteo.html" %}
     </div>
 </div>
 {% endblock %}

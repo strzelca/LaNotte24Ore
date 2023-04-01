@@ -1,0 +1,48 @@
+<div class="flex flex-col justify-center items-center m-8">
+  <div class="grid grid-cols-2 gap-12">
+    <div
+      class="flex flex-col col-span-2 justify-center items-center p-12 bg-neutral-200 dark:bg-neutral-600 rounded-xl shadow-xl"
+    >
+      <p class="text-2xl font-bold col-span-2 text-center">
+        {{weather_widget['weather']}}
+      </p>
+      <img src="{{weather_widget['icon']}}" style="width: 60%" alt="" />
+      <div class="grid grid-cols-2 items-center align-middle">
+        <div class="flex flex-col align-middle">
+          <p class="text-2xl font-bold m-2">
+            <span class="material-symbols-rounded text-yellow-500">
+              device_thermostat
+            </span>
+            {{weather_widget['temp']}}
+          </p>
+          <p class="text-2xl font-bold m-2">
+            <span class="material-symbols-rounded text-blue-500">
+              humidity_mid
+            </span>
+            {{weather_widget['humidity']}}%
+          </p>
+        </div>
+        <div class="flex flex-col align-middle">
+          <p class="text-2xl font-bold m-2">
+            <span class="material-symbols-rounded text-gray-500"> air </span>
+            {{'%0.2f'| format(weather_widget['wind']['speed']|float)}}kt
+          </p>
+          <p class="text-2xl font-bold m-2">
+            <span class="material-symbols-rounded text-gray-500">
+              north_west
+            </span>
+            {{weather_widget['wind']['deg']}}°
+          </p>
+        </div>
+      </div>
+      <p class="text-2xl col-span-2 my-4 italic text-center">
+        <span class="material-symbols-rounded"> map </span>
+        {{weather_widget['city']}}, {{weather_widget['region']}},
+        {{weather_widget['country']}}
+      </p>
+      <div class="w-[75%]">
+        <p class="italic">{{weather_widget['metar']}}</p>
+      </div>
+    </div>
+  </div>
+</div>
