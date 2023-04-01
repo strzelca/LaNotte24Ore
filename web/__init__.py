@@ -57,7 +57,6 @@ def get_image():
     
     if session != None:
         res = db.from_('profiles').select('profile_pic').match({"id": f'{session.user.id}'}).execute()
-        print(res.data[0])
         if res.data[0]['profile_pic'] not in ['', None] :
             url = storage.from_('profiles').get_public_url(
                                res.data[0]['profile_pic'])
@@ -95,9 +94,9 @@ def connect_news_api():
         print("Error: NewsAPI connection failed")
         return None
 
-def get_news():
+def get_news(remote_address):
     db = create_database_client()
-    if announces_bogons():
+    if announces_bogons(remote_address):
         return json.loads("""
             {
                 "articles": [
@@ -117,10 +116,10 @@ def get_news():
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        if get_state_from_ip() in newsapi_const.languages:
-            country_code,language = get_state_from_ip(),language_dict[get_state_from_ip()]
+        if get_state_from_ip(remote_address) in newsapi_const.languages:
+            country_code,language = get_state_from_ip(remote_address),language_dict[get_state_from_ip(remote_address)]
         else:
-            country_code = language = get_state_from_ip()
+            country_code = language = get_state_from_ip(remote_address)
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
@@ -129,9 +128,9 @@ def get_news():
         print("No news")
         return "Nothing to see here..."
 
-def get_news_with_category(category):
+def get_news_with_category(category, remote_address):
     db = create_database_client()
-    if announces_bogons():
+    if announces_bogons(remote_address):
         return json.loads("""
             {
                 "articles": [
@@ -151,10 +150,10 @@ def get_news_with_category(category):
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        if str(get_state_from_ip()).upper() in language_dict:
-            country_code,language = get_state_from_ip(),language_dict[str(get_state_from_ip()).upper()]
+        if str(remote_address).upper() in language_dict:
+            country_code,language = get_state_from_ip(remote_address),language_dict[str(get_state_from_ip(remote_address)).upper()]
         else:
-            country_code = language = get_state_from_ip()
+            country_code = language = get_state_from_ip(remote_address)
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
@@ -163,9 +162,9 @@ def get_news_with_category(category):
         print("No news")
         return "Nothing to see here..."
 
-def get_news_with_query(query):
+def get_news_with_query(query, remote_address):
     db = create_database_client()
-    if announces_bogons():
+    if announces_bogons(remote_address):
         return json.loads("""
             {
                 "articles": [
@@ -185,10 +184,10 @@ def get_news_with_query(query):
         country_code = json.loads(client.get('/api/user').text)['country']
         language = json.loads(client.get('/api/user').text)['language']
     else:
-        if str(get_state_from_ip()).upper() in language_dict:
-            country_code,language = get_state_from_ip(),language_dict[str(get_state_from_ip()).upper()]
+        if str(get_state_from_ip(remote_address)).upper() in language_dict:
+            country_code,language = get_state_from_ip(remote_address),language_dict[str(get_state_from_ip(remote_address)).upper()]
         else:
-            country_code = language = get_state_from_ip()
+            country_code = language = get_state_from_ip(remote_address)
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
@@ -221,11 +220,14 @@ def get_weather_icon_from_location(location):
         return f"https://openweathermap.org/img/wn/{weather.weather_icon_name}@4x.png"
     return None
 
-def get_weather_widget():
+def get_weather_widget(remote_address):
     handler = getHandler(Config.IPINFO_API_KEY)
-    details = handler.getDetails()
+    if remote_address != "127.0.0.1":
+        details = handler.getDetails(remote_address)
+    else:
+        details = handler.getDetails()
     observation = mgr.weather_at_place(details.city)
-    res = requests.get(f"https://www.iata.org/en/publications/directories/code-search/?airport.search={details.city}")
+    res = requests.get(f"https://www.iata.org/en/publications/directories/code-search/?airport.search={str(details.city).split(' ')[0]}")
     data = res.text
     content = re.findall(r'<td>([A-Z]{3})</td>', data)
     codes = []
@@ -259,19 +261,28 @@ def get_weather_widget():
 # # # # # # # # # # # # # # # # # # # # #
 # IP Info API Methods
 
-def get_location_from_ip():
+def get_location_from_ip(remote_address):
     handler = getHandler(Config.IPINFO_API_KEY)
-    details = handler.getDetails()
+    if remote_address != "127.0.0.1":
+        details = handler.getDetails(remote_address)
+    else:
+        details = handler.getDetails()
     return details.city
 
-def get_state_from_ip():
+def get_state_from_ip(remote_address):
     handler = getHandler(Config.IPINFO_API_KEY)
-    details = handler.getDetails()
+    if remote_address != "127.0.0.1":
+        details = handler.getDetails(remote_address)
+    else:
+        details = handler.getDetails()
     return details.country
 
-def announces_bogons():
+def announces_bogons(remote_address):
     handler = getHandler(Config.IPINFO_API_KEY)
-    details = handler.getDetails()
+    if remote_address != "127.0.0.1":
+        details = handler.getDetails(remote_address)
+    else:
+        details = handler.getDetails()
     if details.org == "AS6762 TELECOM ITALIA SPARKLE S.p.A.":
         return True
     else:

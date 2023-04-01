@@ -1,7 +1,7 @@
 <header class="flex w-full items-center bg-white dark:bg-neutral-800 drop-shadow-xl">
-  <div class="container flex mx-auto max-w-full px-8">
+  <div class="container flex justify-between mx-auto max-w-full px-8">
     <!-- LOGO -->
-    <div class="relative flex items-center justify-between w-1/2">
+    <div class="relative flex items-center justify-between ">
       <div class="w-60 max-w-full px-2">
         <a href="/" class="block w-full py-4">
           <picture>
@@ -14,7 +14,6 @@
       </div>
     </div>
     <!-- END LOGO -->
-    <div class="flex divide-x -mx-4 items-center justify-end w-1/2 hover:text-primary">
       <div class="flex items-center hover:text-primary text-dark text-base font-medium px-4">
         <span class="material-symbols-rounded dark:text-gray-50"> search </span>
         <form action="/search" method="get">
@@ -22,12 +21,12 @@
           type="search"
           placeholder="Search"
           name="search"
-          class="text-dark bg-white dark:bg-neutral-800 dark:text-gray-50 px-4 py-2 hover:text-primary text-base font-normal focus:outline-none" 
+          class="text-dark bg-white dark:bg-neutral-800 dark:text-gray-50 px-4 py-2 hover:text-primary text-base font-normal focus:outline-none appearance-none" 
           {% if query is defined %} value="{{query}}" {% endif %}
           >
         </form>
       </div>
-      <span class="flex items-center text-dark dark:text-gray-50 text-base font-medium px-6">
+      <div class="flex items-center text-dark dark:text-gray-50 text-base font-medium px-6">
         <img src="{{weather_icon}}" alt="" width="56px"/>
         <a href="{{weather_link}}" class="px-6 hover:text-primary">
           {{weather}}
@@ -40,8 +39,7 @@
             class="h-10 w-10 ring-2 ring-gray-300 dark:text-gray-200 rounded-full"
           />
         </button>
-      </span>
-    </div>
+      </div>
   </div>
 </header>
 
