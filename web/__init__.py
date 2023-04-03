@@ -122,8 +122,11 @@ def get_news(remote_address):
             country_code = language = get_state_from_ip(remote_address)
     api = connect_news_api()
     if api:    
-        print(f"News For: {f'{country_code}'.lower()}")
-        return api.get_everything(language=f'{language}'.lower(),q=f"{coco.convert(names=country_code, to='name')}".lower(),sort_by='publishedAt')
+        try:
+            news = api.get_everything(language=f'{language}'.lower(),q=f"{coco.convert(names=country_code, to='name')}".lower(),sort_by='publishedAt')
+        except ValueError as e:
+            news = api.get_everything(language='it',q='it',sort_by='publishedAt')
+        return news
     else:
         print("No news")
         return "Nothing to see here..."
@@ -156,8 +159,11 @@ def get_news_with_category(category, remote_address):
             country_code = language = get_state_from_ip(remote_address)
     api = connect_news_api()
     if api:    
-        print(f"News For: {f'{country_code}'.lower()}")
-        return api.get_top_headlines(language=f'{language}'.lower(),country=f'{country_code}'.lower(),category=f'{category}'.lower())
+        try:
+            news = api.get_top_headlines(language=f'{language}'.lower(),country=f'{country_code}'.lower(),category=f'{category}'.lower())
+        except ValueError as e:
+            news = api.get_top_headlines(language='it',country='it',category=f'{category}'.lower())
+        return news
     else:
         print("No news")
         return "Nothing to see here..."
@@ -190,8 +196,11 @@ def get_news_with_query(query, remote_address):
             country_code = language = get_state_from_ip(remote_address)
     api = connect_news_api()
     if api:    
-        print(f"News For: {f'{country_code}'.lower()}")
-        return api.get_everything(language=f'{language}'.lower(),q=f'{query}'.replace('+', ' '),sort_by='publishedAt')
+        try:
+            news = api.get_everything(language=f'{language}'.lower(),q=f'{query}'.replace('+', ' '),sort_by='publishedAt')
+        except ValueError as e:
+            news = api.get_everything(language=f'it'.lower(),q=f'{query}'.replace('+', ' '),sort_by='publishedAt')
+        return news
     else:
         print("No news")
         return "Nothing to see here..."
@@ -237,9 +246,18 @@ def get_weather_widget(remote_address):
     
 
     airports = airportsdata.load('IATA')
-    icao_code = airports[codes[0]].get('icao')
+    if len(codes) > 1:
+        try:
+            icao_code = airports[codes[0]].get('icao')
+        except KeyError as e:
+            icao_code = None
+    else:
+        icao_code = None
 
-    res = requests.get(f"https://tgftp.nws.noaa.gov/data/observations/metar/stations/{icao_code}.TXT").text
+    if icao_code != None:
+        res = requests.get(f"https://tgftp.nws.noaa.gov/data/observations/metar/stations/{icao_code}.TXT").text
+    else:
+        res = ""
 
     if observation:
         weather = observation.weather
