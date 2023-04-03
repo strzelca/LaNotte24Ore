@@ -32,10 +32,21 @@ storage = create_storage_client()
 def index():
     location = get_location_from_ip(request.remote_addr)
     session = db.auth.get_session()
-           
+        
+    if session != None:
+        favorites = db.table("favorites").select('id, article').eq('user_id', f'{session.user.id}').execute().data
+        articles = {'articles': [], 'id': []}
+        for favorite in favorites:
+            article_str = favorite['article']
+            article_json = ast.literal_eval(json.loads(article_str))
+            articles['articles'].append(article_json)
+            articles['id'].append(favorite['id'])
+    else:
+        articles = {'articles': [], 'id': []}
 
     return render_template('index.html',
                            news=json.loads(json.dumps(get_news(request.remote_addr))),
+                           favorites=articles,
                            user_img=get_image(),
                            isLoggedIn=get_full_user(db.auth.get_session()),
                            weather=get_weather_from_location(location),
@@ -423,8 +434,8 @@ def favorite():
         elif request.form.get('remove') == "1":
             session = db.auth.get_session()
             if session != None:
-                db.table("favorites").delete().eq('id   ', f'{request.form.get("id")}').execute()
-    return redirect('/user')
+                db.table("favorites").delete().eq('id', f'{request.form.get("id")}').execute()
+    return redirect(f"{request.form.get('redirect')}")
 
 @register_blueprint.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():

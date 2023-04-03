@@ -93,6 +93,7 @@
             <p class="text-sm">{{article['description']}}</p>
             <input type="text" name="article" value="{{article}}" hidden>
             <input type="text" name="remove" value="1" hidden>
+            <input type="text" name="redirect" value="{{ request.path }}" hidden>
             <input type="text" name="id" value="{{news['id'][loop.index-1]}}" hidden>
             <button type="submit"class="text-sm text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200">Rimuovi dai preferiti</button>
             </div>
