@@ -1,14 +1,13 @@
 {% for article in news['articles'] if not 'dagospia' in article['url'] %}
 {% if loop.index <= 10 %}
-<div class="p-2 flex">
+<div class="p-2 py-4 flex">
   {% if loop.index is divisibleby(2) %} {% if article['urlToImage'] is not none
   %}
   <img
     src="{{article['urlToImage']}}"
     alt="{{article['title']}}"
-    width="160"
-    height="40"
-    class="pr-3 rounded-lg"
+    height="50"
+    class="pr-3 rounded-lg max-h-32"
   />
   {% endif %} {% endif %}
   <div>
@@ -22,15 +21,21 @@
       <span class="text-xs">{{article['publishedAt']|format_datetime}}</span>
     </p>
     <p class="text-sm">{{article['description']}}</p>
+    {% if isLoggedIn is not none %}
+    <form action="/favorite" method="post">
+      <input type="text" name="article" value="{{article}}" hidden>
+      <input type="text" name="add" value="1" hidden>
+      <input type="text" name="redirect" value="{{ request.path }}" hidden>
+      <button type="submit" class="text-sm text-neutral-700 dark:text-neutral-400 hover:text-neutral-400 hover:dark:text-neutral-200">Aggiungi ai preferiti</button>
+    </form>
+    {% endif %}
   </div>
   {% if loop.index is not divisibleby(2) %} {% if article['urlToImage'] is not
   none %}
   <img
     src="{{article['urlToImage']}}"
     alt="{{article['title']}}"
-    width="160"
-    height="40"
-    class="pl-2 rounded-lg"
+    class="pl-2 rounded-lg max-h-32"
   />
   {% endif %} {% endif %}
 </div>
