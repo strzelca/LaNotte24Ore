@@ -118,8 +118,10 @@ def get_news(remote_address):
     else:
         if get_state_from_ip(remote_address) in newsapi_const.languages:
             country_code,language = get_state_from_ip(remote_address),language_dict[get_state_from_ip(remote_address)]
-        else:
+        elif get_state_from_ip(remote_address) in newsapi_const.countries:
             country_code = language = get_state_from_ip(remote_address)
+        else:
+            coutry_code = language = 'it'
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
@@ -152,8 +154,10 @@ def get_news_with_category(category, remote_address):
     else:
         if str(remote_address).upper() in language_dict:
             country_code,language = get_state_from_ip(remote_address),language_dict[str(get_state_from_ip(remote_address)).upper()]
-        else:
+        elif get_state_from_ip(remote_address) in newsapi_const.countries:
             country_code = language = get_state_from_ip(remote_address)
+        else:
+            coutry_code = language = 'it'
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
@@ -186,8 +190,10 @@ def get_news_with_query(query, remote_address):
     else:
         if str(get_state_from_ip(remote_address)).upper() in language_dict:
             country_code,language = get_state_from_ip(remote_address),language_dict[str(get_state_from_ip(remote_address)).upper()]
-        else:
+        elif get_state_from_ip(remote_address) in newsapi_const.countries:
             country_code = language = get_state_from_ip(remote_address)
+        else:
+            coutry_code = language = 'it'
     api = connect_news_api()
     if api:    
         print(f"News For: {f'{country_code}'.lower()}")
