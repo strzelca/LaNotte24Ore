@@ -43,7 +43,6 @@ def index():
             articles['id'].append(favorite['id'])
     else:
         articles = {'articles': [], 'id': []}
-
     return render_template('index.html',
                            news=json.loads(json.dumps(get_news(request.access_route[-1]))),
                            favorites=articles,
