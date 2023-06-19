@@ -233,20 +233,24 @@ def get_weather_widget(remote_address):
     else:
         details = handler.getDetails()
     observation = mgr.weather_at_place(details.city)
-    res = requests.get(f"https://www.iata.org/en/publications/directories/code-search/?airport.search={str(details.city).split(' ')[0]}")
-    data = res.text
-    content = re.findall(r'<td>([A-Z]{3})</td>', data)
-    codes = []
-    for td in content:
-        code = td[:3]
-        codes.append(code)
+    try:
+        res = requests.get(f"https://www.iata.org/en/publications/directories/code-search/?airport.search={str(details.city).split(' ')[0]}")
+        data = res.text
+        content = re.findall(r'<td>([A-Z]{3})</td>', data)
+        codes = []
+        for td in content:
+            code = td[:3]
+            codes.append(code)
+    except Exception as e:
+        codes = None
     
-
-    airports = airportsdata.load('IATA')
-    icao_code = airports[codes[0]].get('icao')
-
-    res = requests.get(f"https://tgftp.nws.noaa.gov/data/observations/metar/stations/{icao_code}.TXT").text
-
+    if codes != None:
+        airports = airportsdata.load('IATA')
+        icao_code = airports[codes[0]].get('icao')
+        res = requests.get(f"https://tgftp.nws.noaa.gov/data/observations/metar/stations/{icao_code}.TXT").text
+    else:
+        codes = ""
+    
     if observation:
         weather = observation.weather
         data = {
