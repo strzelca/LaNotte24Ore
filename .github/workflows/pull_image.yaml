@@ -32,4 +32,4 @@ jobs:
         file: ./Dockerfile
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ghcr.io/owosrl/lanotte24ore:latest
+        tags: ghcr.io/strzelca/lanotte24ore:latest
